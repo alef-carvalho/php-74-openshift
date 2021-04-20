@@ -15,7 +15,7 @@ ENV EPEL_REPOSITORY=https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.
 ENV APACHE_LISTEN_PORT=8080
 
 # define php installation variables
-ENV PHP_VERSION="$(echo $VERSION | sed -e 's/\.//g')"
+ENV PHP_VERSION="$(echo $VERSION | sed -e 's/\.//g')" \
     PHP_COMPOSER_VERSION=2.0.12 \
     PHP_DATE_TIMEZONE="America/Sao_Paulo" \
     PHP_POST_MAX_FILESIZE=256M \
