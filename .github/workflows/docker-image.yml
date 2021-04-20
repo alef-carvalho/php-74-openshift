@@ -24,9 +24,28 @@ jobs:
       run: |
         docker build . -t "inovedados/php:7.1-openshift" --build-arg PHP_VERSION=php71
 
+    - name: Build PHP 7.1 Image
+      run: |
+        docker build . -t "inovedados/php:7.1-openshift" --build-arg PHP_VERSION=php71
+
+    - name: Build PHP 7.2 Image
+      run: |
+        docker build . -t "inovedados/php:7.2-openshift" --build-arg PHP_VERSION=php72
+
+    - name: Build PHP 7.3 Image
+      run: |
+        docker build . -t "inovedados/php:7.3-openshift" --build-arg PHP_VERSION=php73
+
+    - name: Build PHP 7.4 Image
+      run: |
+        docker build . -t "inovedados/php:7.4-openshift" --build-arg PHP_VERSION=php74
+
+    - name: Build PHP 8.0 Image
+      run: |
+        docker build . -t "inovedados/php:8.0-openshift" --build-arg PHP_VERSION=php80
+
     - name: docker push
       run: |
-        docker push inovedados/php:7.0-openshift
         docker push inovedados/php:7.1-openshift
         docker push inovedados/php:7.2-openshift
         docker push inovedados/php:7.3-openshift
