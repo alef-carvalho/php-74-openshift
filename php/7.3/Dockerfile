@@ -50,7 +50,7 @@ RUN yum update -y && yum install \
     cronie -y
 
 # install php, nodejs and extensions
-RUN yum install $EPEL_REPOSITORY yum-utils $REMI_REPOSITORY -y && yum --enablerepo=remi && yum update -y && yum install nodejs
+RUN yum install $EPEL_REPOSITORY yum-utils $REMI_REPOSITORY -y && yum --enablerepo=remi && yum update -y && yum install nodejs \
       $PHP_VERSION-php \
       $PHP_VERSION-php-soap \
       $PHP_VERSION-php-tidy \
