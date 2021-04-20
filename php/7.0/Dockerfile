@@ -81,7 +81,7 @@ RUN yum install $EPEL_REPOSITORY yum-utils $REMI_REPOSITORY -y && yum --enablere
 RUN sed -i -e "s/^Listen 80/Listen $APACHE_LISTEN_PORT/" /etc/httpd/conf/httpd.conf && \
     sed -ri -e 's!^(\s*ErrorLog)\s+\S+!\1 /proc/self/fd/2!g' /etc/httpd/conf/httpd.conf && \
     sed -i -e "s/^short_open_tag = Off/short_open_tag = On/" /etc/opt/remi/$PHP_VERSION/php.ini && \
-    sed -i -e "s/^;date.timezone =/date.timezone = $PHP_DATE_TIMEZONE/" /etc/opt/remi/$PHP_VERSION/php.ini && \
+    #sed -i -e "s/^;date.timezone =/date.timezone = $PHP_DATE_TIMEZONE/" /etc/opt/remi/$PHP_VERSION/php.ini && \
     sed -i -e "s/^post_max_size = 8M/post_max_size = $PHP_POST_MAX_FILESIZE/" /etc/opt/remi/$PHP_VERSION/php.ini && \
     sed -i -e "s/^upload_max_filesize = 2M/upload_max_filesize = $PHP_UPLOAD_MAX_FILESIZE/" /etc/opt/remi/$PHP_VERSION/php.ini && \
     sed -i -e "s/^memory_limit = 128M/memory_limit = $PHP_MEMORY_LIMIT/" /etc/opt/remi/$PHP_VERSION/php.ini && \
