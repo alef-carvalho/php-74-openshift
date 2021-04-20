@@ -16,7 +16,7 @@ jobs:
         #DOCKER_USER: ${{ secrets.DOCKER_USER }}   
         #DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}  
       run: |
-        echo "$DOCKER_USER $DOCKER_PASSWORD" && docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
+        echo "Docker => $DOCKER_USER $DOCKER_PASSWORD"
     - name: docker build 70
       run: |
         docker build ./php/7.0 -t inovedados/php:7.0-openshift
