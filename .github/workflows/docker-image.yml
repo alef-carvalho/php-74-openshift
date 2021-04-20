@@ -20,9 +20,9 @@ jobs:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}    
         
-    - name: Build Images
+    - name: Build PHP 7.1 Image
       run: |
-        for i in 7.1 7.2 7.3 7.4 8.0; do docker build . -t "inovedados/php:$i-openshift" --build-arg php=$i; done
+        docker build . -t "inovedados/php:7.1-openshift" --build-arg PHP_VERSION=php71
 
     - name: docker push
       run: |
