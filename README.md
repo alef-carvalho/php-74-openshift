@@ -1,2 +1,2 @@
-# php-74-openshift
-PHP 7.4 image for Openshift 3.11
+# PHP-OK
+PHP Dockerfiles for Openshift 3.11
