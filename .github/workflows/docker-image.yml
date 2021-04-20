@@ -1,0 +1,45 @@
+name: build images
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: docker login
+      env:
+        DOCKER_USER: ${{ secrets.DOCKER_USER }}   
+        DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}  
+      run: |
+        docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
+    - name: docker build 70
+      run: |
+        docker build ./php/7.0 -t inovedados/php:7.0-openshift
+    - name: docker build 71
+      run: |
+        docker build ./php/7.1 -t inovedados/php:7.1-openshift
+    - name: docker build 72
+      run: |
+        docker build ./php/7.2 -t inovedados/php:7.2-openshift
+    - name: docker build 73
+      run: |
+        docker build ./php/7.3 -t inovedados/php:7.3-openshift
+    - name: docker build 73
+      run: |
+        docker build ./php/7.4 -t inovedados/php:7.4-openshift
+    - name: docker build 80
+      run: |
+        docker build ./php/8.0 -t inovedados/php:8.0-openshift
+    - name: docker push
+      run: |
+        docker push inovedados/php:7.0-openshift
+        docker push inovedados/php:7.1-openshift
+        docker push inovedados/php:7.2-openshift
+        docker push inovedados/php:7.3-openshift
+        docker push inovedados/php:7.4-openshift
+        docker push inovedados/php:8.0-openshift
