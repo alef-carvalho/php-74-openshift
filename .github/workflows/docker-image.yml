@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     
-    - name: Check out repository
+    - name: Checkout Repository
       uses: actions/checkout@v2
       
     - name: Login to Docker Hub
@@ -20,30 +20,10 @@ jobs:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}    
         
-    - name: docker build 70
+    - name: Build Images
       run: |
-        docker build -t inovedados/php:7.0-openshift -f ./php/7.0/Dockerfile .
-        
-    - name: docker build 71
-      run: |
-        docker build ./php/7.1 -t inovedados/php:7.1-openshift
-        
-    - name: docker build 72
-      run: |
-        docker build ./php/7.2 -t inovedados/php:7.2-openshift
-        
-    - name: docker build 73
-      run: |
-        docker build ./php/7.3 -t inovedados/php:7.3-openshift
-        
-    - name: docker build 73
-      run: |
-        docker build ./php/7.4 -t inovedados/php:7.4-openshift
-        
-    - name: docker build 80
-      run: |
-        docker build ./php/8.0 -t inovedados/php:8.0-openshift
-        
+        for i in 7.1 7.2 7.3 7.4 8.0; do docker build . -t "inovedados/php:$i-openshift" --build-arg php=$i; done
+
     - name: docker push
       run: |
         docker push inovedados/php:7.0-openshift
