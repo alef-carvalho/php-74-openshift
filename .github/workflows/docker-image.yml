@@ -22,7 +22,7 @@ jobs:
         
     - name: docker build 70
       run: |
-        docker build ./php/7.0 -t inovedados/php:7.0-openshift
+        docker build -t inovedados/php:7.0-openshift -f ./php/7.0/Dockerfile .
         
     - name: docker build 71
       run: |
