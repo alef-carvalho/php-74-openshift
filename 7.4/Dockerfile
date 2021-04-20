@@ -16,10 +16,38 @@ LABEL autor="Alef Carvalho <alef@alefcarvalho.com.br>" \
       io.openshift.expose-services="8080"
 
 RUN echo "LANG=$LANG" > /etc/locale.conf && \
-yum install glibc-langpack-en glibc-langpack-es glibc-all-langpacks -y && yum update -y && yum install $EPEL yum-utils -y && yum install $REMI -y && \
-yum --enablerepo=remi install nodejs git $PHP_VERSION-php $PHP_VERSION-php-soap $PHP_VERSION-php-tidy $PHP_VERSION-php-imap $PHP_VERSION-php-fpm $PHP_VERSION-php-opcache $PHP_VERSION-php-pdo $PHP_VERSION-php-xml $PHP_VERSION-php-json $PHP_VERSION-php-cli \
-$PHP_VERSION-php-common $PHP_VERSION-php-intl $PHP_VERSION-php-pgsql $PHP_VERSION-php-mysqlnd $PHP_VERSION-php-process $PHP_VERSION-php-mbstring $PHP_VERSION-php-pecl-zip $PHP_VERSION-php-gd $PHP_VERSION-php-ldap  \
-$PHP_VERSION-php-bcmath $PHP_VERSION-php-mcrypt openssl unzip curl nc httpd which cronie -y
+
+      #install system packages
+      yum install glibc-langpack-en glibc-langpack-es glibc-all-langpacks git openssl zip unzip curl nc httpd which wget nano cronie -y && yum update -y && \
+      
+      #install epel and remi repositories
+      yum install $EPEL yum-utils $REMI -y && yum --enablerepo=remi && \
+
+      #install php and extensions
+      yum install nodejs $PHP_VERSION-php \
+            $PHP_VERSION-php-soap \
+            $PHP_VERSION-php-tidy \
+            $PHP_VERSION-php-imap \
+            $PHP_VERSION-php-fpm \
+            $PHP_VERSION-php-opcache \
+            $PHP_VERSION-php-pdo \
+            $PHP_VERSION-php-xml \
+            $PHP_VERSION-php-json \
+            $PHP_VERSION-php-cli \
+            $PHP_VERSION-php-common \
+            $PHP_VERSION-php-intl \
+            $PHP_VERSION-php-pgsql \
+            $PHP_VERSION-php-mysqlnd \
+            $PHP_VERSION-php-process \
+            $PHP_VERSION-php-mbstring \
+            $PHP_VERSION-php-pecl-zip \
+            $PHP_VERSION-php-gd \
+            $PHP_VERSION-php-ldap \
+            $PHP_VERSION-php-bcmath \ 
+            $PHP_VERSION-php-mcrypt \
+            $PHP_VERSION-php-xml \
+            $PHP_VERSION-php-pear \
+            $PHP_VERSION-php-curl -y
 
 RUN sed -i -e "s/^Listen 80/Listen 8080/" /etc/httpd/conf/httpd.conf && \
 sed -ri -e 's!^(\s*ErrorLog)\s+\S+!\1 /proc/self/fd/2!g' /etc/httpd/conf/httpd.conf && \
