@@ -109,9 +109,7 @@ RUN echo "INSTALLED PHP VERSION: $(php --version)" && echo "INSTALLING COMPOSER"
     yum autoremove -y &> /dev/null && yum clean all &> /dev/null && rm -rf /var/cache/yum &> /dev/null
 
 # copy apache configuration
-RUN ls -l;
-
-COPY ../apache/security.conf /etc/httpd/conf.d/security.conf
+COPY ../../apache/security.conf /etc/httpd/conf.d/security.conf
 
 # fix permissions
 RUN mkdir /opt/composer_env && usermod -u 1001 apache && usermod -aG 0 apache && rm -rf /etc/localtime /var/www/html/* /etc/httpd/conf.d/welcome.conf && touch /etc/localtime /etc/timezone && \
