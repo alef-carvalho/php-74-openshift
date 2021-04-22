@@ -10,6 +10,9 @@ ENV EPEL_REPOSITORY=https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.
 # define apache installation variables
 ENV APACHE_LISTEN_PORT=8080
 
+# define nano as default file editor
+ENV VISUAL="nano"
+
 # define php installation variables
 ENV PHP_COMPOSER_VERSION=2.0.12 \
     PHP_DATE_TIMEZONE="America/Sao_Paulo" \
@@ -44,7 +47,7 @@ RUN yum update -y && yum install \
     which \
     wget \
     nano \
-    cronie -y
+    crontabs -y
 
 # install php, nodejs and extensions
 RUN yum install $EPEL_REPOSITORY yum-utils $REMI_REPOSITORY -y && yum --enablerepo=remi && yum update -y && yum install nodejs \
