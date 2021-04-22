@@ -5,11 +5,7 @@ ARG PHP_VERSION=php74
 
 # define system installation variables
 ENV EPEL_REPOSITORY=https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm \
-    REMI_REPOSITORY=https://rpms.remirepo.net/enterprise/remi-release-8.rpm \
-    LANG=en_US.UTF-8 \
-    LANGUAGE=en_US.UTF-8 \
-    LC_COLLATE=C \
-    LC_CTYPE=en_US.UTF-8
+    REMI_REPOSITORY=https://rpms.remirepo.net/enterprise/remi-release-8.rpm
 
 # define apache installation variables
 ENV APACHE_LISTEN_PORT=8080
@@ -32,9 +28,6 @@ LABEL autor="Alef Carvalho <alef.carvalho@inovedados.com.br>" \
       io.k8s.display-name="PHP 7.4 Apache CentOS 8" \
       io.openshift.tags="builder,php,openshift,okd" \
       io.openshift.expose-services="8080"
-
-# set system language
-RUN echo "LANG=$LANG" > /etc/locale.conf
 
 # install system packages
 RUN yum update -y && yum install \
