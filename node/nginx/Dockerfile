@@ -41,6 +41,11 @@ RUN yum install $EPEL_REPOSITORY yum-utils $REMI_REPOSITORY -y && \
 RUN rm -v /etc/nginx/nginx.conf
 ADD nginx.conf /etc/nginx/nginx.conf
 
+# fix permissions
+RUN usermod -u 1001 inovedados && \
+    usermod -aG 0 inovedados && \
+    rm -rf /var/www/html/*
+
 # set workdir to application files
 WORKDIR /var/www/html
 
