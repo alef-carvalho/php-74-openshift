@@ -45,7 +45,10 @@ RUN yum update -y && yum install \
     nano -y
 
 # install php, nodejs and extensions
-RUN yum install $EPEL_REPOSITORY yum-utils $REMI_REPOSITORY -y && yum --enablerepo=remi && yum update -y && yum install nodejs \
+RUN yum install $EPEL_REPOSITORY yum-utils $REMI_REPOSITORY -y && \
+    yum --enablerepo=remi && \
+    yum update -y && \
+    yum install -y \
       $PHP_VERSION-php \
       $PHP_VERSION-php-soap \
       $PHP_VERSION-php-tidy \
@@ -69,7 +72,8 @@ RUN yum install $EPEL_REPOSITORY yum-utils $REMI_REPOSITORY -y && yum --enablere
       $PHP_VERSION-php-mcrypt \
       $PHP_VERSION-php-xml \
       $PHP_VERSION-php-pear \
-      $PHP_VERSION-php-curl -y && \
+      $PHP_VERSION-php-curl \
+      nodejs && \
       npm install -g yarn cross-env
 
 # change config files
@@ -99,7 +103,7 @@ RUN echo "INSTALLED PHP VERSION: $(php --version)" && echo "INSTALLING COMPOSER"
     yum autoremove -y &> /dev/null && yum clean all &> /dev/null && rm -rf /var/cache/yum &> /dev/null
 
 # fix permissions
-RUN mkdir /opt/composer_env && usermod -u 1001 inovedados && usermod -aG 0 inovedados && rm -rf /etc/localtime /var/www/* && touch /etc/localtime /etc/timezone && \
+RUN mkdir /opt/composer_env && rm -rf /etc/localtime /var/www/* && touch /etc/localtime /etc/timezone && \
     mkdir -p /usr/share/composer_install && \
     chown -R 1001 /opt/composer_env /var/opt/remi /etc/opt/remi /opt/remi /usr/share/composer_install /var/www /etc/timezone /etc/localtime && \
     chgrp -R 0 /opt/composer_env /opt/remi /etc/opt/remi /var/opt/remi /var/www  /usr/share/composer_install /etc/timezone /etc/localtime && \

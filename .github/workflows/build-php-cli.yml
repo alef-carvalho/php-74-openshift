@@ -1,0 +1,55 @@
+name: build-php-cli-images
+
+on:
+
+  push:
+    branches: [ main ]
+    paths:
+      - 'php/cli/**'
+
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'php/cli/**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+      
+    - name: Login to Docker Hub
+      uses: docker/login-action@v1
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}    
+        
+    - name: Build PHP 7.1 Image
+      run: |
+        docker build ./php/cli -t "inovedados/php:7.1-cli-openshift" --build-arg PHP_VERSION=php71
+
+    - name: Build PHP 7.2 Image
+      run: |
+        docker build ./php/cli -t "inovedados/php:7.2-cli-openshift" --build-arg PHP_VERSION=php72
+
+    - name: Build PHP 7.3 Image
+      run: |
+        docker build ./php/cli -t "inovedados/php:7.3-cli-openshift" --build-arg PHP_VERSION=php73
+
+    - name: Build PHP 7.4 Image
+      run: |
+        docker build ./php/cli -t "inovedados/php:7.4-cli-openshift" --build-arg PHP_VERSION=php74
+
+    - name: Build PHP 8.0 Image
+      run: |
+        docker build ./php/cli -t "inovedados/php:8.0-cli-openshift" --build-arg PHP_VERSION=php80
+
+    - name: docker push
+      run: |
+        docker push inovedados/php:7.1-cli-openshift
+        docker push inovedados/php:7.2-cli-openshift
+        docker push inovedados/php:7.3-cli-openshift
+        docker push inovedados/php:7.4-cli-openshift
+        docker push inovedados/php:8.0-cli-openshift

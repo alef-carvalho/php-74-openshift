@@ -1,0 +1,35 @@
+name: build-node-images
+
+on:
+
+  push:
+    branches: [ main ]
+    paths:
+      - 'node/**'
+
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'node/**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+      
+    - name: Login to Docker Hub
+      uses: docker/login-action@v1
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}    
+        
+    - name: Build Node 12 Image
+      run: |
+        docker build ./node/nginx -t "inovedados/node:12-nginx-openshift"
+
+    - name: docker push
+      run: |
+        docker push inovedados/node:12-nginx-openshift

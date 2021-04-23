@@ -33,10 +33,7 @@ LABEL autor="Alef Carvalho <alef.carvalho@inovedados.com.br>" \
       io.openshift.expose-services="8080"
 
 # install system packages
-RUN yum update -y && yum install \
-    glibc-langpack-en \
-    glibc-langpack-es \
-    glibc-all-langpacks \
+RUN yum update -y && yum install -y \
     git \
     openssl \
     zip \
@@ -47,10 +44,13 @@ RUN yum update -y && yum install \
     which \
     wget \
     nano \
-    crontabs -y
+    crontabs
 
 # install php, nodejs and extensions
-RUN yum install $EPEL_REPOSITORY yum-utils $REMI_REPOSITORY -y && yum --enablerepo=remi && yum update -y && yum install nodejs \
+RUN yum install $EPEL_REPOSITORY yum-utils $REMI_REPOSITORY -y && \
+    yum --enablerepo=remi && \
+    yum update -y && \
+    yum install -y \
       $PHP_VERSION-php \
       $PHP_VERSION-php-soap \
       $PHP_VERSION-php-tidy \
@@ -74,7 +74,8 @@ RUN yum install $EPEL_REPOSITORY yum-utils $REMI_REPOSITORY -y && yum --enablere
       $PHP_VERSION-php-mcrypt \
       $PHP_VERSION-php-xml \
       $PHP_VERSION-php-pear \
-      $PHP_VERSION-php-curl -y && \
+      $PHP_VERSION-php-curl \
+      nodejs && \
       npm install -g yarn cross-env
 
 # change config files
