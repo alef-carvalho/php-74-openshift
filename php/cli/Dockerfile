@@ -103,7 +103,7 @@ RUN echo "INSTALLED PHP VERSION: $(php --version)" && echo "INSTALLING COMPOSER"
     yum autoremove -y &> /dev/null && yum clean all &> /dev/null && rm -rf /var/cache/yum &> /dev/null
 
 # configure openshift user
-RUN user add inovedados && usermod -u 1001 inovedados && usermod -aG 0 inovedados && \
+RUN useradd inovedados && usermod -u 1001 inovedados && usermod -aG 0 inovedados && \
     mkdir /opt/composer_env && \
     mkdir -p /usr/share/composer_install && \
     chown -R 1001 /opt/composer_env /var/opt/remi /etc/opt/remi /opt/remi /usr/share/composer_install /var/www /etc/timezone /etc/localtime && \

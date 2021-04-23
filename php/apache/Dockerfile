@@ -113,7 +113,7 @@ RUN echo "INSTALLED PHP VERSION: $(php --version)" && echo "INSTALLING COMPOSER"
 COPY security.conf /etc/httpd/conf.d/security.conf
 
 # configure openshift user
-RUN user add inovedados && usermod -u 1001 inovedados && usermod -aG 0 inovedados && \
+RUN useradd inovedados && usermod -u 1001 inovedados && usermod -aG 0 inovedados && \
     mkdir /opt/composer_env && \
     rm -rf /etc/localtime /var/www/html/* /etc/httpd/conf.d/welcome.conf && touch /etc/localtime /etc/timezone && \
     mkdir -p /usr/share/composer_install && \

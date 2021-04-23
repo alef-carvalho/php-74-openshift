@@ -44,7 +44,7 @@ RUN yum install $EPEL_REPOSITORY yum-utils $REMI_REPOSITORY -y && \
 ADD ./nginx.conf /etc/nginx/nginx.conf
 
 # configure openshift user
-RUN user add inovedados && usermod -u 1001 inovedados && usermod -aG 0 inovedados && \
+RUN useradd inovedados && usermod -u 1001 inovedados && usermod -aG 0 inovedados && \
     chown -R 1001:0 /etc/nginx && \
     chmod -R g+w /etc/nginx && \
     rm -rf /var/www/html/*
