@@ -42,7 +42,7 @@ RUN rm -v /etc/nginx/nginx.conf
 ADD nginx.conf /etc/nginx/nginx.conf
 
 # fix permissions
-RUN usermod -u 1001 inovedados && \
+RUN useradd inovedados && usermod -u 1001 inovedados && \
     usermod -aG 0 inovedados && \
     rm -rf /var/www/html/*
 
