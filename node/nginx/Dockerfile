@@ -7,6 +7,9 @@ LABEL autor="Alef Carvalho <alef.carvalho@inovedados.com.br>" \
       io.openshift.tags="builder,nodejs,openshift,okd" \
       io.openshift.expose-services="8080"
 
+# define the deployment user
+ENV OPENSHIFT_USERNAME="inovedados"
+
 # define system installation variables
 ENV EPEL_REPOSITORY=https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm \
     REMI_REPOSITORY=https://rpms.remirepo.net/enterprise/remi-release-8.rpm
@@ -37,11 +40,21 @@ RUN yum install $EPEL_REPOSITORY yum-utils $REMI_REPOSITORY -y && \
     yum install -y nodejs && \
     npm install -g yarn cross-env
 
-# copy nginx config
-RUN rm -v /etc/nginx/nginx.conf
+# copy nginx custom config
 ADD nginx.conf /etc/nginx/nginx.conf
 
-# fix permissions
+# fix nginx configuration to run as unprivileged user
+RUN sed -i 's,listen       80;,listen       8080;,' /etc/nginx/conf.d/default.conf \
+    && sed -i '/user  nginx;/d' /etc/nginx/nginx.conf \
+    && sed -i 's,/var/run/nginx.pid,/tmp/nginx.pid,' /etc/nginx/nginx.conf \
+    && sed -i "/^http {/a \    proxy_temp_path /tmp/proxy_temp;\n    client_body_temp_path /tmp/client_temp;\n    fastcgi_temp_path /tmp/fastcgi_temp;\n    uwsgi_temp_path /tmp/uwsgi_temp;\n    scgi_temp_path /tmp/scgi_temp;\n" /etc/nginx/nginx.conf \
+    # nginx user must own the cache and etc directory to write cache and tweak the nginx config
+    && chown -R 1001:0 /var/cache/nginx \
+    && chmod -R g+w /var/cache/nginx \
+    && chown -R 1001:0 /etc/nginx \
+    && chmod -R g+w /etc/nginx
+
+# fix user permissions
 RUN useradd inovedados && usermod -u 1001 inovedados && \
     usermod -aG 0 inovedados && \
     rm -rf /var/www/html/*
