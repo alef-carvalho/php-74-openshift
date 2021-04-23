@@ -41,21 +41,13 @@ RUN yum install $EPEL_REPOSITORY yum-utils $REMI_REPOSITORY -y && \
     npm install -g yarn cross-env
 
 # copy nginx custom config
-ADD nginx.conf /etc/nginx/nginx.conf
-
-# fix nginx configuration to run as unprivileged user
-RUN sed -i '/user  nginx;/d' /etc/nginx/nginx.conf \
-    && sed -i 's,/var/run/nginx.pid,/tmp/nginx.pid,' /etc/nginx/nginx.conf \
-    && sed -i "/^http {/a \    proxy_temp_path /tmp/proxy_temp;\n    client_body_temp_path /tmp/client_temp;\n    fastcgi_temp_path /tmp/fastcgi_temp;\n    uwsgi_temp_path /tmp/uwsgi_temp;\n    scgi_temp_path /tmp/scgi_temp;\n" /etc/nginx/nginx.conf \
-    # nginx user must own the cache and etc directory to write cache and tweak the nginx config
-    #&& chown -R 1001:0 /var/cache/nginx \
-    #&& chmod -R g+w /var/cache/nginx \
-    && chown -R 1001:0 /etc/nginx \
-    && chmod -R g+w /etc/nginx
+ADD ./nginx.conf /etc/nginx/nginx.conf
 
 # configure openshift user
 RUN useradd inovedados && usermod -u 1001 inovedados && \
     usermod -aG 0 inovedados && \
+    chown -R 1001:0 /etc/nginx && \
+    chmod -R g+w /etc/nginx && \
     rm -rf /var/www/html/*
 
 # set workdir to application files
