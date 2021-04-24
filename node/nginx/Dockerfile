@@ -53,9 +53,8 @@ RUN useradd inovedados && usermod -u 1001 inovedados && usermod -aG 0 inovedados
     rm -rf /var/www/html/*
 
 # update path variable
-ENV NPM_PACKAGES="${HOME}/.npm-packages" \
-    PATH="$PATH:$NPM_PACKAGES/bin" \
-    MANPATH="${MANPATH-$(manpath)}:$NPM_PACKAGES/share/man"
+ENV NPM_PACKAGES="${HOME}/.npm-packages"
+   PATH="$PATH:$NPM_PACKAGES/bin"
 
 # set workdir to application files
 WORKDIR /var/www/html
