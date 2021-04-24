@@ -46,9 +46,16 @@ ADD ./nginx.conf /etc/nginx/nginx.conf
 
 # configure openshift user
 RUN useradd inovedados && usermod -u 1001 inovedados && usermod -aG 0 inovedados && \
-    chown -R 1001:0 /etc/nginx /usr/lib/node_modules && \
+    chown -R 1001:0 /etc/nginx && \
     chmod -R g+w /etc/nginx && \
+    mkdir "${HOME}/.npm-packages" && \
+    npm config set prefix "${HOME}/.npm-packages" && \
     rm -rf /var/www/html/*
+
+# update path variable
+ENV NPM_PACKAGES="${HOME}/.npm-packages" \
+    PATH="$PATH:$NPM_PACKAGES/bin" \
+    MANPATH="${MANPATH-$(manpath)}:$NPM_PACKAGES/share/man"
 
 # set workdir to application files
 WORKDIR /var/www/html
