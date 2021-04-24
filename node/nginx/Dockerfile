@@ -34,7 +34,8 @@ RUN yum update -y && yum install -y \
     which \
     wget \
     nano \
-    nginx
+    nginx \
+    python2
 
 # install nodejs and global npm packages
 RUN yum install $EPEL_REPOSITORY yum-utils $REMI_REPOSITORY -y && \
