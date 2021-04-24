@@ -49,8 +49,8 @@ RUN useradd inovedados && usermod -u 1001 inovedados && usermod -aG 0 inovedados
     chown -R 1001:0 /etc/nginx && \
     chmod -R g+w /etc/nginx && \
     mkdir "${HOME}/.npm-packages" && \
-    npm config set prefix "${HOME}/.npm-packages" && \
-    rm -rf /var/www/html/*
+    rm -rf /var/www/html/* && \
+    npm config set prefix "${HOME}/.npm-packages"
 
 # update path variable
 ENV NPM_PACKAGES="${HOME}/.npm-packages" \
