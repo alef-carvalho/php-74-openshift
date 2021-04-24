@@ -47,8 +47,10 @@ RUN yum update -y && yum install -y \
 # install php, nodejs and extensions
 RUN yum install $EPEL_REPOSITORY yum-utils $REMI_REPOSITORY -y && \
     yum --enablerepo=remi && \
+    curl -fsSL https://rpm.nodesource.com/setup_16.x | bash - && \
+    curl -sL https://dl.yarnpkg.com/rpm/yarn.repo | tee /etc/yum.repos.d/yarn.repo && \
     yum update -y && \
-    yum install -y \
+    yum install -y nodejs yarn \
       $PHP_VERSION-php \
       $PHP_VERSION-php-soap \
       $PHP_VERSION-php-tidy \
@@ -72,9 +74,7 @@ RUN yum install $EPEL_REPOSITORY yum-utils $REMI_REPOSITORY -y && \
       $PHP_VERSION-php-mcrypt \
       $PHP_VERSION-php-xml \
       $PHP_VERSION-php-pear \
-      $PHP_VERSION-php-curl \
-      nodejs && \
-      npm install -g yarn cross-env
+      $PHP_VERSION-php-curl
 
 # change config files
 RUN sed -ri -e 's!^(\s*ErrorLog)\s+\S+!\1 /proc/self/fd/2!g' /etc/httpd/conf/httpd.conf && \
