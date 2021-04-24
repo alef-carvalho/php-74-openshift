@@ -36,7 +36,7 @@ RUN yum update -y && yum install -y \
 # install nodejs and global npm packages
 RUN yum install $EPEL_REPOSITORY yum-utils $REMI_REPOSITORY -y && \
     yum --enablerepo=remi && \
-    curl -fsSL https://rpm.nodesource.com/setup_16.x | sudo bash - && \
+    curl -fsSL https://rpm.nodesource.com/setup_16.x | bash - && \
     yum update -y && \
     yum install -y nodejs && \
     npm install -g yarn cross-env
