@@ -22,8 +22,7 @@ ENV VISUAL="nano"
 
 # install system packages
 RUN yum update -y && yum install -y \
-    g++ \
-    python \
+    gcc-c++ \
     make \
     tar \
     git \
