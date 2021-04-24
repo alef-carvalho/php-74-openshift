@@ -46,8 +46,8 @@ ADD ./nginx.conf /etc/nginx/nginx.conf
 
 # configure openshift user
 RUN useradd inovedados && usermod -u 1001 inovedados && usermod -aG 0 inovedados && \
-    chown -R 1001:0 /etc/nginx && \
-    chmod -R g+w /etc/nginx && \
+    chown -R 1001:0 /etc/nginx /usr/local/lib/node_modules \
+    chmod -R g+w /etc/nginx /usr/local/lib/node_modules && \
     mkdir "${HOME}/.npm-packages" && \
     rm -rf /var/www/html/* && \
     npm config set prefix "${HOME}/.npm-packages"
