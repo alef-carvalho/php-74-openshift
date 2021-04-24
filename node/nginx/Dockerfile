@@ -22,6 +22,8 @@ ENV VISUAL="nano"
 
 # install system packages
 RUN yum update -y && yum install -y \
+    gcc-c++ \
+    tar \
     git \
     openssl \
     zip \
