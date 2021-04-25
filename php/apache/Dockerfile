@@ -91,8 +91,8 @@ RUN sed -i -e "s/^Listen 80/Listen $APACHE_LISTEN_PORT/" /etc/httpd/conf/httpd.c
     sed -i -e "s/^display_startup_errors = On/display_startup_errors = $PHP_DISPLAY_STARTUP_ERRORS/" /etc/opt/remi/$PHP_VERSION/php.ini && \
     sed -i -e "s/^LogLevel warn/LogLevel Error/" /etc/opt/remi/$PHP_VERSION/php.ini && \
     sed -i "/;session.save_path/c\session.save_path=\/tmp" /etc/opt/remi/$PHP_VERSION/php.ini && \
-    #sed -i -e "s/^;curl.cainfo =/curl.cainfo='\/etc\/opt\/remi\/$PHP_VERSION\/cacert.pem'/" /etc/opt/remi/$PHP_VERSION/php.ini && \
-    #sed -i -e "s/^;openssl.cafile=/openssl.cafile='\/etc\/opt\/remi\/$PHP_VERSION\/cacert.pem'/" /etc/opt/remi/$PHP_VERSION/php.ini && \
+    sed -i -e "s/^;curl.cainfo =/curl.cainfo='\/etc\/opt\/remi\/$PHP_VERSION\/cacert.pem'/" /etc/opt/remi/$PHP_VERSION/php.ini && \
+    sed -i -e "s/^;openssl.cafile=/openssl.cafile='\/etc\/opt\/remi\/$PHP_VERSION\/cacert.pem'/" /etc/opt/remi/$PHP_VERSION/php.ini && \
     sed -i -e "s/^LoadModule mpm_event_module/#LoadModule mpm_event_module/" /etc/httpd/conf.modules.d/00-mpm.conf && \
     sed -i -e "s/^#LoadModule mpm_prefork_module/LoadModule mpm_prefork_module/" /etc/httpd/conf.modules.d/00-mpm.conf && \
     sed -i -e "s/^LoadModule mpm_worker_module/#LoadModule mpm_worker_module/" /etc/httpd/conf.modules.d/00-mpm.conf && \
