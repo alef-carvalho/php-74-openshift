@@ -42,8 +42,11 @@ RUN yum install $EPEL_REPOSITORY yum-utils $REMI_REPOSITORY -y && \
     yum --enablerepo=remi && \
     curl -fsSL https://rpm.nodesource.com/setup_15.x | bash - && \
     curl -sL https://dl.yarnpkg.com/rpm/yarn.repo | tee /etc/yum.repos.d/yarn.repo && \
-    yum update -y && \
-    yum install -y nodejs yarn
+    yum update -y && yum install -y \
+        nodejs \
+        yarn \
+        crontabs \
+        supervisor
 
 # copy nginx custom config
 ADD ./nginx.conf /etc/nginx/nginx.conf
@@ -51,8 +54,9 @@ ADD ./nginx.conf /etc/nginx/nginx.conf
 # configure openshift user
 RUN useradd inovedados && usermod -u 1001 inovedados && usermod -aG 0 inovedados && \
     mkdir "${HOME}/.npm-packages" && \
-    chown -R 1001:0 /etc/nginx /usr/lib/node_modules && \
-    chmod -R g+w /etc/nginx /usr/lib/node_modules && \
+    mkdir /var/log/inovedados/ && \
+    chown -R 1001:0 /etc/nginx /usr/lib/node_modules /var/log/inovedados && \
+    chmod -R g+w /etc/nginx /usr/lib/node_modules /var/log/inovedados && \
     rm -rf /var/www/html/* && \
     npm config set prefix "${HOME}/.npm-packages"
 

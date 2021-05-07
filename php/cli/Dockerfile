@@ -42,7 +42,9 @@ RUN yum update -y && yum install -y \
     nc \
     which \
     wget \
-    nano
+    nano \
+    crontabs \
+    supervisor
 
 # install php, nodejs and extensions
 RUN yum install $EPEL_REPOSITORY yum-utils $REMI_REPOSITORY -y && \
@@ -105,13 +107,14 @@ RUN echo "INSTALLED PHP VERSION: $(php --version)" && echo "INSTALLING COMPOSER"
 # configure openshift user
 RUN useradd inovedados && usermod -u 1001 inovedados && usermod -aG 0 inovedados && \
     mkdir /opt/composer_env && \
+    mkdir /var/log/inovedados/ && \
     mkdir "${HOME}/.npm-packages" && \
     mkdir -p /usr/share/composer_install && \
     rm -rf /etc/localtime /var/www/html/* /etc/httpd/conf.d/welcome.conf && touch /etc/localtime /etc/timezone && \
     npm config set prefix "${HOME}/.npm-packages" && \
-    chown -R 1001 /opt/composer_env /var/opt/remi /etc/opt/remi /opt/remi /usr/share/composer_install /var/www /etc/timezone /etc/localtime && \
-    chgrp -R 0 /opt/composer_env /opt/remi /etc/opt/remi /var/opt/remi /var/www  /usr/share/composer_install /etc/timezone /etc/localtime && \
-    chmod -R g=u /opt/composer_env /var/opt/remi /etc/opt/remi /opt/remi /var/www /usr/share/composer_install /etc/timezone /etc/localtime
+    chown -R 1001 /opt/composer_env /var/log/inovedados /var/opt/remi /etc/opt/remi /opt/remi /usr/share/composer_install /var/www /etc/timezone /etc/localtime && \
+    chgrp -R 0 /opt/composer_env /var/log/inovedados /opt/remi /etc/opt/remi /var/opt/remi /var/www  /usr/share/composer_install /etc/timezone /etc/localtime && \
+    chmod -R g=u /opt/composer_env /var/log/inovedados /var/opt/remi /etc/opt/remi /opt/remi /var/www /usr/share/composer_install /etc/timezone /etc/localtime
 
 # set workdir to application files
 WORKDIR /var/www

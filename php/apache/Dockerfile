@@ -44,7 +44,8 @@ RUN yum update -y && yum install -y \
     which \
     wget \
     nano \
-    crontabs
+    crontabs \
+    supervisor
 
 # install php, nodejs and extensions
 RUN yum install $EPEL_REPOSITORY yum-utils $REMI_REPOSITORY -y && \
@@ -115,13 +116,14 @@ COPY security.conf /etc/httpd/conf.d/security.conf
 # configure openshift user
 RUN useradd inovedados && usermod -u 1001 inovedados && usermod -aG 0 inovedados && \
     mkdir /opt/composer_env && \
+    mkdir /var/log/inovedados/ && \
     mkdir -p /usr/share/composer_install && \
     mkdir "${HOME}/.npm-packages" && \
     rm -rf /etc/localtime /var/www/html/* /etc/httpd/conf.d/welcome.conf && touch /etc/localtime /etc/timezone && \
     npm config set prefix "${HOME}/.npm-packages" && \
-    chown -R 1001 /opt/composer_env /var/log/httpd/ /var/opt/remi /etc/opt/remi /opt/remi /usr/share/composer_install /run/httpd /var/www/html /usr/share/httpd /etc/httpd /etc/timezone /etc/localtime && \
-    chgrp -R 0 /opt/composer_env /var/log/httpd/ /run/httpd /opt/remi /etc/opt/remi /var/opt/remi /var/www/html  /usr/share/composer_install /usr/share/httpd /etc/httpd /etc/timezone /etc/localtime && \
-    chmod -R g=u /opt/composer_env /var/log/httpd/ /run/httpd /var/opt/remi /etc/opt/remi /opt/remi /var/www/html /usr/share/composer_install /etc/httpd /usr/share/httpd /etc/timezone /etc/localtime
+    chown -R 1001 /opt/composer_env /var/log/inovedados /var/log/httpd/ /var/opt/remi /etc/opt/remi /opt/remi /usr/share/composer_install /run/httpd /var/www/html /usr/share/httpd /etc/httpd /etc/timezone /etc/localtime && \
+    chgrp -R 0 /opt/composer_env /var/log/inovedados /var/log/httpd/ /run/httpd /opt/remi /etc/opt/remi /var/opt/remi /var/www/html  /usr/share/composer_install /usr/share/httpd /etc/httpd /etc/timezone /etc/localtime && \
+    chmod -R g=u /opt/composer_env /var/log/inovedados /var/log/httpd/ /run/httpd /var/opt/remi /etc/opt/remi /opt/remi /var/www/html /usr/share/composer_install /etc/httpd /usr/share/httpd /etc/timezone /etc/localtime
 
 # set workdir to application files
 WORKDIR /var/www/html
