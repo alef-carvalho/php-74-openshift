@@ -44,40 +44,41 @@ RUN yum update -y && yum install -y \
     which \
     wget \
     nano \
-    crontabs \
-    supervisor
+    crontabs
 
 # install php, nodejs and extensions
 RUN yum install $EPEL_REPOSITORY yum-utils $REMI_REPOSITORY -y && \
     yum --enablerepo=remi && \
     curl -fsSL https://rpm.nodesource.com/setup_15.x | bash - && \
     curl -sL https://dl.yarnpkg.com/rpm/yarn.repo | tee /etc/yum.repos.d/yarn.repo && \
-    yum update -y && \
-    yum install -y nodejs yarn \
-      $PHP_VERSION-php \
-      $PHP_VERSION-php-soap \
-      $PHP_VERSION-php-tidy \
-      $PHP_VERSION-php-imap \
-      $PHP_VERSION-php-fpm \
-      $PHP_VERSION-php-opcache \
-      $PHP_VERSION-php-pdo \
-      $PHP_VERSION-php-xml \
-      $PHP_VERSION-php-json \
-      $PHP_VERSION-php-cli \
-      $PHP_VERSION-php-common \
-      $PHP_VERSION-php-intl \
-      $PHP_VERSION-php-pgsql \
-      $PHP_VERSION-php-mysqlnd \
-      $PHP_VERSION-php-process \
-      $PHP_VERSION-php-mbstring \
-      $PHP_VERSION-php-pecl-zip \
-      $PHP_VERSION-php-gd \
-      $PHP_VERSION-php-ldap \
-      $PHP_VERSION-php-bcmath \
-      $PHP_VERSION-php-mcrypt \
-      $PHP_VERSION-php-xml \
-      $PHP_VERSION-php-pear \
-      $PHP_VERSION-php-curl
+    yum update -y && yum install -y \
+        nodejs \
+        yarn \
+        supervisor \
+        $PHP_VERSION-php \
+        $PHP_VERSION-php-soap \
+        $PHP_VERSION-php-tidy \
+        $PHP_VERSION-php-imap \
+        $PHP_VERSION-php-fpm \
+        $PHP_VERSION-php-opcache \
+        $PHP_VERSION-php-pdo \
+        $PHP_VERSION-php-xml \
+        $PHP_VERSION-php-json \
+        $PHP_VERSION-php-cli \
+        $PHP_VERSION-php-common \
+        $PHP_VERSION-php-intl \
+        $PHP_VERSION-php-pgsql \
+        $PHP_VERSION-php-mysqlnd \
+        $PHP_VERSION-php-process \
+        $PHP_VERSION-php-mbstring \
+        $PHP_VERSION-php-pecl-zip \
+        $PHP_VERSION-php-gd \
+        $PHP_VERSION-php-ldap \
+        $PHP_VERSION-php-bcmath \
+        $PHP_VERSION-php-mcrypt \
+        $PHP_VERSION-php-xml \
+        $PHP_VERSION-php-pear \
+        $PHP_VERSION-php-curl
 
 # change config files
 RUN sed -i -e "s/^Listen 80/Listen $APACHE_LISTEN_PORT/" /etc/httpd/conf/httpd.conf && \
