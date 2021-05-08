@@ -24,32 +24,12 @@ jobs:
       uses: docker/login-action@v1
       with:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
-        password: ${{ secrets.DOCKERHUB_TOKEN }}    
-#
-#    - name: Build PHP 8.0 Image
-#      run: |
-#        docker build ./php/apache -t "inovedados/php:8.0-apache-openshift" --build-arg PHP_VERSION=php80
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
 
     - name: Build PHP 7.4 Image
       run: |
         docker build ./php/apache -t "inovedados/php:7.4-apache-openshift" --build-arg PHP_VERSION=php74
 
-#    - name: Build PHP 7.3 Image
-#      run: |
-#        docker build ./php/apache -t "inovedados/php:7.3-apache-openshift" --build-arg PHP_VERSION=php73
-#
-#    - name: Build PHP 7.2 Image
-#      run: |
-#        docker build ./php/apache -t "inovedados/php:7.2-apache-openshift" --build-arg PHP_VERSION=php72
-#
-#    - name: Build PHP 7.1 Image
-#      run: |
-#        docker build ./php/apache -t "inovedados/php:7.1-apache-openshift" --build-arg PHP_VERSION=php71
-
     - name: docker push
       run: |
-#        docker push inovedados/php:7.1-apache-openshift
-#        docker push inovedados/php:7.2-apache-openshift
-#        docker push inovedados/php:7.3-apache-openshift
         docker push inovedados/php:7.4-apache-openshift
-#        docker push inovedados/php:8.0-apache-openshift
