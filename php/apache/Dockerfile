@@ -117,8 +117,6 @@ COPY security.conf /etc/httpd/conf.d/security.conf
 # configure openshift user
 RUN useradd inovedados && usermod -u 1001 inovedados && usermod -aG 0 inovedados && \
     mkdir /opt/composer_env && \
-    mkdir /var/log/supervisor && \
-    mkdir /var/run/supervisor && \
     mkdir -p /usr/share/composer_install && \
     mkdir "${HOME}/.npm-packages" && \
     rm -rf /etc/localtime /var/www/html/* /etc/httpd/conf.d/welcome.conf && touch /etc/localtime /etc/timezone && \
