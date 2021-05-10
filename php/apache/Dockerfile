@@ -114,6 +114,8 @@ RUN echo "INSTALLED PHP VERSION: $(php --version)" && echo "INSTALLING COMPOSER"
 
 # copy apache configuration
 COPY security.conf /etc/httpd/conf.d/security.conf
+COPY supervisor/base.conf /etc/supervisord.conf
+COPY supervisor/jobs/* /etc/supervisord.d
 
 # configure openshift user
 RUN useradd inovedados && usermod -u 1001 inovedados && usermod -aG 0 inovedados && \
@@ -126,8 +128,7 @@ RUN useradd inovedados && usermod -u 1001 inovedados && usermod -aG 0 inovedados
     chgrp -R 0 /opt/composer_env /run/supervisor /var/log/supervisor /var/log/httpd/ /run/httpd /opt/remi /etc/opt/remi /var/opt/remi /var/www/html  /usr/share/composer_install /usr/share/httpd /etc/httpd /etc/timezone /etc/localtime && \
     chmod -R g=u /opt/composer_env /run/supervisor /var/log/supervisor /var/log/httpd/ /run/httpd /var/opt/remi /etc/opt/remi /opt/remi /var/www/html /usr/share/composer_install /etc/httpd /usr/share/httpd /etc/timezone /etc/localtime && \
     systemctl enable supervisord && \
-    systemctl enable crond.service && \
-    systemctl enable redis
+    systemctl enable crond.service
 
 # set workdir to application files
 WORKDIR /var/www/html
