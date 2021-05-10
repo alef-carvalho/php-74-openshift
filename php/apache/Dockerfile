@@ -54,6 +54,7 @@ RUN yum install $EPEL_REPOSITORY yum-utils $REMI_REPOSITORY -y && \
     yum update -y && yum install -y \
         nodejs \
         yarn \
+        redis \
         supervisor \
         $PHP_VERSION-php \
         $PHP_VERSION-php-soap \
@@ -125,7 +126,8 @@ RUN useradd inovedados && usermod -u 1001 inovedados && usermod -aG 0 inovedados
     chgrp -R 0 /opt/composer_env /run/supervisor /var/log/supervisor /var/log/httpd/ /run/httpd /opt/remi /etc/opt/remi /var/opt/remi /var/www/html  /usr/share/composer_install /usr/share/httpd /etc/httpd /etc/timezone /etc/localtime && \
     chmod -R g=u /opt/composer_env /run/supervisor /var/log/supervisor /var/log/httpd/ /run/httpd /var/opt/remi /etc/opt/remi /opt/remi /var/www/html /usr/share/composer_install /etc/httpd /usr/share/httpd /etc/timezone /etc/localtime && \
     systemctl enable supervisord && \
-    systemctl enable crond.service
+    systemctl enable crond.service && \
+    systemctl enable redis
 
 # set workdir to application files
 WORKDIR /var/www/html
