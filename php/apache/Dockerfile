@@ -57,7 +57,6 @@ RUN yum install $EPEL_REPOSITORY yum-utils $REMI_REPOSITORY -y && \
         redis \
         supervisor \
         $PHP_VERSION-php \
-        $PHP_VERSION-devel \
         $PHP_VERSION-php-soap \
         $PHP_VERSION-php-tidy \
         $PHP_VERSION-php-imap \
