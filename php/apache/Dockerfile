@@ -119,9 +119,7 @@ COPY supervisor/jobs/* /etc/supervisord.d
 
 # configure openshift user
 RUN useradd inovedados && usermod -u 1001 inovedados && usermod -aG 0 inovedados && \
-    mkdir /opt/composer_env && \
-    mkdir -p /usr/share/composer_install && \
-    mkdir "${HOME}/.npm-packages" && \
+    mkdir -p /opt/composer_env /usr/share/composer_install /var/log/redis "${HOME}/.npm-packages" && \
     rm -rf /etc/localtime /var/www/html/* /etc/httpd/conf.d/welcome.conf && touch /etc/localtime /etc/timezone && \
     npm config set prefix "${HOME}/.npm-packages" && \
     chown -R 1001 /opt/composer_env /run/supervisor /var/log/supervisor /var/log/httpd/ /var/opt/remi /etc/opt/remi /opt/remi /usr/share/composer_install /run/httpd /var/www/html /usr/share/httpd /etc/httpd /etc/timezone /etc/localtime && \
