@@ -122,9 +122,9 @@ RUN useradd inovedados && usermod -u 1001 inovedados && usermod -aG 0 inovedados
     mkdir -p /opt/composer_env /usr/share/composer_install /var/log/redis "${HOME}/.npm-packages" && \
     rm -rf /etc/localtime /var/www/html/* /etc/httpd/conf.d/welcome.conf && touch /etc/localtime /etc/timezone && \
     npm config set prefix "${HOME}/.npm-packages" && \
-    chown -R 1001 /opt/composer_env /run/supervisor /var/log/supervisor /var/log/httpd/ /var/log/redis /var/opt/remi /etc/opt/remi /opt/remi /usr/share/composer_install /run/httpd /var/www/html /usr/share/httpd /etc/httpd /etc/timezone /etc/localtime && \
-    chgrp -R 0 /opt/composer_env /run/supervisor /var/log/supervisor /var/log/httpd/ /var/log/redis /run/httpd /opt/remi /etc/opt/remi /var/opt/remi /var/www/html  /usr/share/composer_install /usr/share/httpd /etc/httpd /etc/timezone /etc/localtime && \
-    chmod -R g=u /opt/composer_env /run/supervisor /var/log/supervisor /var/log/httpd/ /var/log/redis /run/httpd /var/opt/remi /etc/opt/remi /opt/remi /var/www/html /usr/share/composer_install /etc/httpd /usr/share/httpd /etc/timezone /etc/localtime && \
+    chown -R 1001 /opt/composer_env /run/supervisor /var/log/supervisor /var/log/httpd/ /var/log/redis /var/lib/redis /var/opt/remi /etc/opt/remi /opt/remi /usr/share/composer_install /run/httpd /var/www/html /usr/share/httpd /etc/httpd /etc/timezone /etc/localtime && \
+    chgrp -R 0 /opt/composer_env /run/supervisor /var/log/supervisor /var/log/httpd/ /var/log/redis /var/lib/redis /run/httpd /opt/remi /etc/opt/remi /var/opt/remi /var/www/html  /usr/share/composer_install /usr/share/httpd /etc/httpd /etc/timezone /etc/localtime && \
+    chmod -R g=u /opt/composer_env /run/supervisor /var/log/supervisor /var/log/httpd/ /var/log/redis /var/lib/redis /run/httpd /var/opt/remi /etc/opt/remi /opt/remi /var/www/html /usr/share/composer_install /etc/httpd /usr/share/httpd /etc/timezone /etc/localtime && \
     systemctl enable supervisord && \
     systemctl enable crond.service
 
