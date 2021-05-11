@@ -81,6 +81,11 @@ RUN yum install $EPEL_REPOSITORY yum-utils $REMI_REPOSITORY -y && \
         $PHP_VERSION-php-pear \
         $PHP_VERSION-php-curl
 
+# install pecl extensions
+RUN pecl install -o -f redis && \
+    rm -rf /tmp/pear && \
+    echo "extension=redis.so" > /etc/opt/remi/php74/php.d/enable-ext-redis.ini
+
 # change config files
 RUN sed -i -e "s/^Listen 80/Listen $APACHE_LISTEN_PORT/" /etc/httpd/conf/httpd.conf && \
     sed -ri -e 's!^(\s*ErrorLog)\s+\S+!\1 /proc/self/fd/2!g' /etc/httpd/conf/httpd.conf && \
