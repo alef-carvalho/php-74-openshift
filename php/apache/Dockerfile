@@ -142,6 +142,3 @@ USER 1001:0
 
 # expose port 8080 (needed by openshift)
 EXPOSE 8080
-
-# start supervisor
-CMD ["/usr/bin/supervisord"]
