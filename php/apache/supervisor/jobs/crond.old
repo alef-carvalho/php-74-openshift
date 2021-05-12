@@ -1,5 +1,4 @@
 [program:crond]
-priority=100
 command = crond -n
 startsecs = 0
 autorestart = true
