@@ -127,8 +127,7 @@ RUN useradd inovedados && usermod -u 1001 inovedados && usermod -aG 0 inovedados
     chgrp -R 0 /opt/composer_env /run/supervisor /var/log/supervisor /var/log/httpd/ /var/log/inovedados /var/log/redis /var/log/cron /var/spool/cron /var/lib/redis /run/httpd /opt/remi /etc/opt/remi /var/opt/remi /var/www/html  /usr/share/composer_install /usr/share/httpd /etc/httpd /etc/timezone /etc/localtime && \
     chmod -R g=u /opt/composer_env /run/supervisor /var/log/supervisor /var/log/httpd/ /var/log/inovedados /var/log/redis /var/log/cron /var/spool/cron /var/lib/redis /run/httpd /var/opt/remi /etc/opt/remi /opt/remi /var/www/html /usr/share/composer_install /etc/httpd /usr/share/httpd /etc/timezone /etc/localtime && \
     systemctl enable supervisord && \
-    systemctl enable crond.service && \
-    systemctl start crond.service
+    systemctl enable crond.service
 
 # set workdir to application files
 WORKDIR /var/www/html
