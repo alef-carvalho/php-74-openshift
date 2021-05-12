@@ -116,7 +116,7 @@ RUN echo "INSTALLED PHP VERSION: $(php --version)" && echo "INSTALLING COMPOSER"
 # copy apache configuration
 COPY security.conf /etc/httpd/conf.d/security.conf
 COPY supervisor/base.conf /etc/supervisord.conf
-COPY supervisor/jobs/* /etc/supervisord.d/
+COPY supervisor/jobs/*.ini /etc/supervisord.d/
 
 # configure openshift user
 RUN useradd inovedados && usermod -u 1001 inovedados && usermod -aG 0 inovedados && \
