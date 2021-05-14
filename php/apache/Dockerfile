@@ -80,7 +80,8 @@ RUN yum install $EPEL_REPOSITORY yum-utils $REMI_REPOSITORY -y && \
         $PHP_VERSION-php-xml \
         $PHP_VERSION-php-pear \
         $PHP_VERSION-php-curl \
-        $PHP_VERSION-php-redis
+        $PHP_VERSION-php-redis \
+        $PHP_VERSION-php-gmp
 
 # change config files
 RUN sed -i -e "s/^Listen 80/Listen $APACHE_LISTEN_PORT/" /etc/httpd/conf/httpd.conf && \
