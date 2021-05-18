@@ -114,7 +114,7 @@ RUN echo "INSTALLED PHP VERSION: $(php --version)" && echo "INSTALLING COMPOSER"
     yum autoremove -y &> /dev/null && yum clean all &> /dev/null && rm -rf /var/cache/yum &> /dev/null
 
 # copy apache configuration
-COPY security.conf /etc/httpd/conf.d/security.conf
+COPY apache/httpd.conf /etc/httpd/conf.d/httpd.conf
 COPY supervisor/base.conf /etc/supervisord.conf
 COPY supervisor/jobs/*.ini /etc/supervisord.d/
 
