@@ -54,7 +54,6 @@ RUN yum install $EPEL_REPOSITORY yum-utils $REMI_REPOSITORY -y && \
     yum update -y && yum install -y \
         nodejs \
         yarn \
-        redis \
         supervisor \
         $PHP_VERSION-php \
         $PHP_VERSION-php-soap \
@@ -121,12 +120,12 @@ COPY supervisor/jobs/*.ini /etc/supervisord.d/
 
 # configure openshift user
 RUN useradd inovedados && usermod -u 1001 inovedados && usermod -aG 0 inovedados && \
-    mkdir -p /opt/composer_env /usr/share/composer_install /var/log/redis /var/log/cron /var/log/inovedados "${HOME}/.npm-packages" && \
+    mkdir -p /opt/composer_env /usr/share/composer_install /var/log/cron /var/log/inovedados "${HOME}/.npm-packages" && \
     rm -rf /etc/localtime /var/www/html/* /etc/httpd/conf.d/welcome.conf && touch /etc/localtime /etc/timezone && \
     npm config set prefix "${HOME}/.npm-packages" && \
-    chown -R 1001 /opt/composer_env /run/supervisor /var/log/supervisor /var/log/httpd/ /var/log/inovedados /var/log/redis /var/log/cron /var/spool/cron /var/lib/redis /var/opt/remi /etc/opt/remi /opt/remi /usr/share/composer_install /run/httpd /var/www/html /usr/share/httpd /etc/httpd /etc/timezone /etc/localtime && \
-    chgrp -R 0 /opt/composer_env /run/supervisor /var/log/supervisor /var/log/httpd/ /var/log/inovedados /var/log/redis /var/log/cron /var/spool/cron /var/lib/redis /run/httpd /opt/remi /etc/opt/remi /var/opt/remi /var/www/html  /usr/share/composer_install /usr/share/httpd /etc/httpd /etc/timezone /etc/localtime && \
-    chmod -R g=u /opt/composer_env /run/supervisor /var/log/supervisor /var/log/httpd/ /var/log/inovedados /var/log/redis /var/log/cron /var/spool/cron /var/lib/redis /run/httpd /var/opt/remi /etc/opt/remi /opt/remi /var/www/html /usr/share/composer_install /etc/httpd /usr/share/httpd /etc/timezone /etc/localtime && \
+    chown -R 1001 /opt/composer_env /run/supervisor /var/log/supervisor /var/log/httpd/ /var/log/inovedados /var/log/cron /var/spool/cron /var/opt/remi /etc/opt/remi /opt/remi /usr/share/composer_install /run/httpd /var/www/html /usr/share/httpd /etc/httpd /etc/timezone /etc/localtime && \
+    chgrp -R 0 /opt/composer_env /run/supervisor /var/log/supervisor /var/log/httpd/ /var/log/inovedados /var/log/cron /var/spool/cron /run/httpd /opt/remi /etc/opt/remi /var/opt/remi /var/www/html  /usr/share/composer_install /usr/share/httpd /etc/httpd /etc/timezone /etc/localtime && \
+    chmod -R g=u /opt/composer_env /run/supervisor /var/log/supervisor /var/log/httpd/ /var/log/inovedados /var/log/cron /var/spool/cron /run/httpd /var/opt/remi /etc/opt/remi /opt/remi /var/www/html /usr/share/composer_install /etc/httpd /usr/share/httpd /etc/timezone /etc/localtime && \
     chmod gu+rw /var/run && \
     chmod gu+s /usr/sbin/crond && \
     systemctl enable supervisord && \
