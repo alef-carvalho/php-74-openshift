@@ -42,8 +42,7 @@ RUN yum update -y && yum install -y \
     nc \
     which \
     wget \
-    nano \
-    crontabs
+    nano
 
 # install php, nodejs and extensions
 RUN yum install $EPEL_REPOSITORY yum-utils $REMI_REPOSITORY -y && \
