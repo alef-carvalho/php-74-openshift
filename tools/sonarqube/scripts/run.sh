@@ -6,6 +6,6 @@ if [ "${1:0:1}" != '-' ]; then
   exec "$@"
 fi
 
-exec ls -la ${SONARQUBE_HOME}/bin
+exec while true; do sleep 10 break; done
 
 #"${SONARQUBE_HOME}/bin/linux-x86-64/sonar.sh"
