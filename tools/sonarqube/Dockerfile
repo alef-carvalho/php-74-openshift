@@ -4,7 +4,7 @@ FROM centos:8
 ENV SONAR_VERSION=9.0.0.45539 \
     SONARQUBE_HOME=/opt/sonarqube \
     SONARQUBE_WEB_PORT=9000 \
-    SONARQUBE_WEB_HOST="sonar.web.host"
+    SONARQUBE_WEB_HOST="sonar.web.host" \
     SONARQUBE_WEB_CONTEXT="/sonarqube" \
     SONARQUBE_DATABASE_HOST="192.168.0.1" \
     SONARQUBE_DATABASE_USERNAME="sonarqube" \
