@@ -62,4 +62,4 @@ USER 10001
 WORKDIR ${SONARQUBE_HOME}
 
 #start server
-ENTRYPOINT ["run-sonar"]
+#ENTRYPOINT ["run-sonar"]
