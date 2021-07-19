@@ -1,26 +1,29 @@
-FROM sonarqube:latest
+FROM centos:8
 
+#define openshift config variables
 ENV SONAR_VERSION=9.0.0.45539 \
     SONARQUBE_HOME=/opt/sonarqube \
-    # Database configuration
-    # Defaults to using H2
-    SONARQUBE_JDBC_USERNAME=sonar \
-    SONARQUBE_JDBC_PASSWORD=sonar \
-    SONARQUBE_JDBC_URL="" \
-    LANG=en_US.utf8 \
-    JAVA_HOME=/usr/lib/jvm/jre
+    SONARQUBE_WEB_PORT=9000 \
+    SONARQUBE_WEB_HOST="sonar.web.host"
+    SONARQUBE_WEB_CONTEXT="/sonarqube" \
+    SONARQUBE_DATABASE_HOST="192.168.0.1" \
+    SONARQUBE_DATABASE_USERNAME="sonarqube" \
+    SONARQUBE_DATABASE_PASSWORD="sonarqube" \
+    JAVA_HOME=/usr/lib/jvm/jre \
+    LANG=en_US.utf8
 
-# Http port
-EXPOSE 9000
-
+#define openshift tags
 LABEL name="sonarqube" \
       io.k8s.description="SonarQube" \
       io.k8s.display-name="SonarQube" \
       io.openshift.expose-services="9000:9000" \
       io.openshift.tags="sonarqube,sonar,sonarsource"
 
+#expose port to openshift
+EXPOSE 9000
+
 #install dependencies
-RUN yum -y install --setopt=tsflags=nodocs java-1.8.0-openjdk unzip hostname && \
+RUN yum -y install --setopt=tsflags=nodocs java-1.8.0-openjdk unzip hostname gettext && \
     yum clean all
 
 #download and install sonarqube
@@ -33,6 +36,9 @@ RUN cd /opt && \
 
 #copy configuration file
 COPY sonar.properties ${SONARQUBE_HOME}/conf/
+
+#make configuration file
+RUN envsubst < ${SONARQUBE_HOME}/conf/sonar.properties
 
 #copy deployer script
 COPY run.sh ${SONARQUBE_HOME}/bin/run-sonar
