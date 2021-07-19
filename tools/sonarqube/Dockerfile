@@ -13,7 +13,7 @@ ENV SONAR_VERSION=9.0.0.45539 \
 # Http port
 EXPOSE 9000
 
-LABEL name="sonarqube"
+LABEL name="sonarqube" \
       io.k8s.description="SonarQube" \
       io.k8s.display-name="SonarQube" \
       io.openshift.expose-services="9000:9000" \
