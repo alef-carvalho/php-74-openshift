@@ -50,8 +50,7 @@ RUN chmod +x /usr/bin/run-sonar
 RUN useradd -l -u 10001 -r -g 0 -m -s /sbin/nologin \
         -c "sonarqube application user" sonarqube && \
     chown -R 10001:0 ${SONARQUBE_HOME} && \
-    chmod -R g=u ${SONARQUBE_HOME} && \
-    chmod ug+x ${SONARQUBE_HOME}/bin/run.sh
+    chmod -R g=u ${SONARQUBE_HOME}
 
 #configure volumes
 VOLUME ["${SONARQUBE_HOME}/data", "${SONARQUBE_HOME}/extensions"]
