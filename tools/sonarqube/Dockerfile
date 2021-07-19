@@ -27,10 +27,12 @@ RUN yum -y install --setopt=tsflags=nodocs java-1.8.0-openjdk unzip hostname get
     yum clean all
 
 #download and install sonarqube
-RUN curl -o sonarqube.zip -SL https://binaries.sonarsource.com/Distribution/sonarqube/sonarqube-${SONAR_VERSION}.zip --retry 9 --retry-max-time 0 -C - && \
+RUN cd /opt && \
+    mkdir ${SONARQUBE_HOME} && \
+    curl -o sonarqube.zip -SL https://binaries.sonarsource.com/Distribution/sonarqube/sonarqube-${SONAR_VERSION}.zip --retry 9 --retry-max-time 0 -C - && \
     unzip sonarqube.zip && \
     mv sonarqube-${SONAR_VERSION}/* ${SONARQUBE_HOME} && \
-    rm sonarqube.zip*
+    rm sonarqube.zip
 
 #copy configuration file
 COPY ./config/sonar.properties ${SONARQUBE_HOME}/conf/
