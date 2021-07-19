@@ -44,7 +44,7 @@ RUN envsubst < ${SONARQUBE_HOME}/conf/sonar.properties
 COPY run.sh ${SONARQUBE_HOME}/bin/run-sonar
 
 #make deployer script as executable
-RUN chmod +x /usr/bin/deploy
+RUN chmod +x ${SONARQUBE_HOME}/bin/run-sonar
 
 #set the environment path
 ENV PATH=$PATH:${SONARQUBE_HOME}/bin
