@@ -35,19 +35,16 @@ RUN cd /opt && \
     rm -rf ${SONARQUBE_HOME}/bin/*
 
 #copy configuration file
-COPY sonar.properties ${SONARQUBE_HOME}/conf/
+COPY ./config/sonar.properties ${SONARQUBE_HOME}/conf/
 
-#make configuration file
+#change configuration file
 RUN envsubst < ${SONARQUBE_HOME}/conf/sonar.properties
 
 #copy deployer script
-COPY run.sh ${SONARQUBE_HOME}/bin/run-sonar
+ADD ./scripts/run.sh /usr/bin/run-sonar
 
 #make deployer script as executable
-RUN chmod +x ${SONARQUBE_HOME}/bin/run-sonar
-
-#set the environment path
-ENV PATH=$PATH:${SONARQUBE_HOME}/bin
+RUN chmod +x /usr/bin/run-sonar
 
 #fix permissions
 RUN useradd -l -u 10001 -r -g 0 -m -s /sbin/nologin \
