@@ -28,10 +28,8 @@ EXPOSE 9000
 
 # install php, nodejs and extensions
 RUN yum install $EPEL_REPOSITORY yum-utils $REMI_REPOSITORY -y && \
-    yum --enablerepo=remi && \
     yum update -y && \
-    yum install -y --setopt=tsflags=nodocs java-1.8.0-openjdk zip unzip wget nano hostname gettext supervisor && \
-    yum clean all
+    yum install -y --enablerepo=remi --setopt=tsflags=nodocs java-11-openjdk zip unzip wget nano hostname gettext supervisor
 
 # copy supervisor configuration files
 COPY supervisor/base.conf /etc/supervisord.conf
