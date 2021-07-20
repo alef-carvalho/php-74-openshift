@@ -49,7 +49,7 @@ RUN cd /opt && \
 COPY ./config/sonar.properties ${SONARQUBE_HOME}/conf/
 
 #change configuration file
-RUN envsubst < ${SONARQUBE_HOME}/conf/sonar.properties
+RUN envsubst < ${SONARQUBE_HOME}/conf/sonar.properties > ${SONARQUBE_HOME}/conf/sonar.properties
 
 #copy deployer script
 ADD ./scripts/run.sh /usr/bin/run-sonar
