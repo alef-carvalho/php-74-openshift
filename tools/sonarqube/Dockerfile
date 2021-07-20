@@ -1,5 +1,9 @@
 FROM centos:8
 
+# define additional repositories
+ENV EPEL_REPOSITORY=https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm \
+    REMI_REPOSITORY=https://rpms.remirepo.net/enterprise/remi-release-8.rpm
+
 #define openshift config variables
 ENV SONAR_VERSION=9.0.0.45539 \
     SONARQUBE_HOME=/opt/sonarqube \
@@ -22,8 +26,11 @@ LABEL name="sonarqube" \
 #expose port to openshift
 EXPOSE 9000
 
-# install dependencies
-RUN yum -y install --setopt=tsflags=nodocs java-1.8.0-openjdk unzip hostname gettext supervisor && \
+# install php, nodejs and extensions
+RUN yum install $EPEL_REPOSITORY yum-utils $REMI_REPOSITORY -y && \
+    yum --enablerepo=remi && \
+    yum update -y && \
+    yum install -y --setopt=tsflags=nodocs java-1.8.0-openjdk zip unzip wget nano hostname gettext supervisor && \
     yum clean all
 
 # copy supervisor configuration files
