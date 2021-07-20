@@ -64,6 +64,8 @@ RUN useradd inovedados && usermod -u 1001 inovedados && usermod -aG 0 inovedados
 #configure volumes
 VOLUME ["${SONARQUBE_HOME}/data", "${SONARQUBE_HOME}/extensions"]
 
+RUN sysctl -w vm.max_map_count=262144
+
 #change user to unprivileged
 USER 10001
 
