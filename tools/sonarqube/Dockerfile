@@ -22,9 +22,13 @@ LABEL name="sonarqube" \
 #expose port to openshift
 EXPOSE 9000
 
-#install dependencies
-RUN yum -y install --setopt=tsflags=nodocs java-1.8.0-openjdk unzip hostname gettext && \
+# install dependencies
+RUN yum -y install --setopt=tsflags=nodocs java-1.8.0-openjdk unzip hostname gettext supervisor && \
     yum clean all
+
+# copy supervisor configuration files
+COPY supervisor/base.conf /etc/supervisord.conf
+COPY supervisor/jobs/*.ini /etc/supervisord.d/
 
 #download and install sonarqube
 RUN cd /opt && \
@@ -46,11 +50,14 @@ ADD ./scripts/run.sh /usr/bin/run-sonar
 #make deployer script as executable
 RUN chmod +x /usr/bin/run-sonar
 
-#fix permissions
-RUN useradd -l -u 10001 -r -g 0 -m -s /sbin/nologin \
-        -c "sonarqube application user" sonarqube && \
-    chown -R 10001:0 ${SONARQUBE_HOME} && \
-    chmod -R g=u ${SONARQUBE_HOME}
+# configure openshift user
+RUN useradd inovedados && usermod -u 1001 inovedados && usermod -aG 0 inovedados && \
+    mkdir -p /var/log/supervisor /var/log/inovedados && \
+    chown -R 1001 /run/supervisor /var/log/supervisor /var/log/inovedados ${SONARQUBE_HOME} && \
+    chgrp -R 0 /run/supervisor /var/log/supervisor /var/log/inovedados ${SONARQUBE_HOME} && \
+    chmod -R g=u /run/supervisor /var/log/supervisor /var/log/inovedados ${SONARQUBE_HOME} && \
+    chmod gu+rw /var/run && \
+    systemctl enable supervisord
 
 #configure volumes
 VOLUME ["${SONARQUBE_HOME}/data", "${SONARQUBE_HOME}/extensions"]
