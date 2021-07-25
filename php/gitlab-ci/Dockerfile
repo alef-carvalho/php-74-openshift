@@ -13,6 +13,27 @@ RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" &&
     php composer-setup.php --install-dir=/usr/local/bin --filename=composer --version=$PHP_COMPOSER_VERSION && \
     rm composer-setup.php
 
+# install system packages
+RUN apt-get update && apt-get install -yq \
+    apt-transport-https \
+    apt-utils \
+    ca-certificates \
+    build-essential \
+    curl \
+    git \
+    gnupg2 \
+    jq \
+    libc-client-dev \
+    openssh-client \
+    unzip \
+    zip \
+    zlib1g-dev
+
+# configure php extensions
+RUN docker-php-ext-configure \
+    gd \
+    mcrypt
+
 # install php extensions
 RUN docker-php-ext-install \
     soap \
