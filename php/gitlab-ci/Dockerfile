@@ -31,8 +31,7 @@ RUN apt-get update && apt-get install -yq \
 
 # configure php extensions
 RUN docker-php-ext-configure \
-    gd \
-    mcrypt
+    gd
 
 # install php extensions
 RUN docker-php-ext-install \
@@ -50,12 +49,15 @@ RUN docker-php-ext-install \
     gd \
     ldap \
     bcmath \
-    mcrypt \
     xml \
     pear \
     curl \
     redis \
     gmp
+
+# install pecl extensions
+RUN pecl install mcrypt-1.0.1 && \
+    docker-php-ext-enable mcrypt
 
 # fix permissions
 RUN adduser --disabled-password --gecos "" $USER && \
