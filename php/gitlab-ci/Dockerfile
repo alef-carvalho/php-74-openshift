@@ -18,7 +18,6 @@ RUN docker-php-ext-install \
     soap \
     tidy \
     imap \
-    fpm \
     opcache \
     pdo \
     xml \
