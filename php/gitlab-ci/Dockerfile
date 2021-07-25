@@ -22,7 +22,6 @@ RUN docker-php-ext-install \
     pdo \
     xml \
     json \
-    common \
     intl \
     pgsql \
     mysqlnd \
