@@ -30,8 +30,7 @@ RUN apt-get update && apt-get install -yq \
     zlib1g-dev
 
 # configure php extensions
-RUN docker-php-ext-configure \
-    gd
+RUN docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp
 
 # install php extensions
 RUN docker-php-ext-install \
