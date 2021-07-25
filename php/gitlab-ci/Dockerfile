@@ -25,9 +25,7 @@ RUN docker-php-ext-install \
     intl \
     pgsql \
     mysqlnd \
-    process \
     mbstring \
-    pecl-zip \
     gd \
     ldap \
     bcmath \
