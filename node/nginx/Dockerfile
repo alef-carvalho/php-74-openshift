@@ -54,8 +54,8 @@ ADD ./nginx.conf /etc/nginx/nginx.conf
 # configure openshift user
 RUN useradd inovedados && usermod -u 1001 inovedados && usermod -aG 0 inovedados && \
     mkdir -p /var/log/cron /var/log/inovedados "${HOME}/.npm-packages" && \
-    chown -R 1001:0 /etc/nginx /usr/lib/node_modules /var/log/supervisor /var/log/httpd/ /var/log/inovedados /var/log/cron && \
-    chmod -R g+w /etc/nginx /usr/lib/node_modules /var/log/supervisor /var/log/httpd/ /var/log/inovedados /var/log/cron && \
+    chown -R 1001:0 /etc/nginx /usr/lib/node_modules /var/log/supervisor /var/log/inovedados /var/log/cron && \
+    chmod -R g+w /etc/nginx /usr/lib/node_modules /var/log/supervisor /var/log/inovedados /var/log/cron && \
     rm -rf /var/www/html/* && \
     npm config set prefix "${HOME}/.npm-packages"
 
