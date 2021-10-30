@@ -27,8 +27,8 @@ RUN echo "SELECTED PHP VERSION => $PHP_VERSION"
 
 # add build labels
 LABEL autor="Alef Carvalho <alef.carvalho@inovedados.com.br>" \
-      io.k8s.description="PHP 7.4 Apache CentOS 8" \
-      io.k8s.display-name="PHP 7.4 Apache CentOS 8" \
+      io.k8s.description="${PHP_VERSION} With Apache - CentOS 8" \
+      io.k8s.display-name="${PHP_VERSION} With Apache - CentOS 8" \
       io.openshift.tags="builder,php,openshift,okd" \
       io.openshift.expose-services="8080"
 
