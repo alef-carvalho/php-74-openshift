@@ -31,6 +31,9 @@ RUN chmod +x /usr/local/bin/php-ext-install && php-ext-install \
     mbstring \
     openssl \
     pdo \
+    pdo_mysql \
+    pdo_pgsql \
+    pdo_sqlsrv \
     tokenizer \
     xml \
     opcache \
