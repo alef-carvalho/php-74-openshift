@@ -48,7 +48,7 @@ RUN chmod +x /usr/local/bin/php-ext-install && php-ext-install \
 RUN php-ext-install @composer-2.0.2
 
 # Configure nginx
-#COPY ./config/nginx/nginx.conf /etc/nginx/nginx.conf
+COPY ./config/nginx/nginx.conf /etc/nginx/nginx.conf
 COPY ./config/nginx/app.conf /etc/nginx/http.d/default.conf
 
 # Configure PHP and FPM
@@ -72,21 +72,15 @@ RUN sed -ri -e "s!;date.timezone =!date.timezone = "$PHP_DATE_TIMEZONE"!g" $PHP_
     sed -i "/;session.save_path/c\session.save_path=\/tmp" $PHP_CONFIG_FILE
 
 # Create required directories
-RUN mkdir -p /var/log/supervisor /run/supervisor
+RUN mkdir -p /var/log/supervisor /run/supervisor \
+    /var/log/nginx /var/cache/nginx
 
 # Fix permissions
 RUN adduser -u 1001 --h /app -G root -D inovedados && \
     addgroup nginx root && \
-    chgrp -R 0 /run /var/log/supervisor && \
+    chgrp -R 0 /run /var/log/supervisor /var/cache/nginx && \
     chmod -R g=u /run /var/log/supervisor && \
-    chmod gu+rw /run /var/run \
-
-RUN chmod g+rwx /var/cache/nginx /var/run /var/log/nginx
-RUN chgrp -R root /var/cache/nginx
-
-# comment user directive as master process is run as user in OpenShift anyhow
-RUN sed -i.bak 's/^user/#user/' /etc/nginx/nginx.conf
-
+    chmod gu+rw /run /var/run /var/cache/nginx /var/log/nginx
 
 # Go-To Application Workdir
 WORKDIR /app
