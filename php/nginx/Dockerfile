@@ -19,7 +19,7 @@ ENV PHP_COMPOSER_VERSION=2.0.12 \
     PHP_CONFIG_FILE=/usr/local/etc/php/conf.d/app.ini
 
 # Instal Libraries
-RUN apk add --no-cache curl zip unzip nginx nano nodejs supervisor wget yarn
+RUN apk add --no-cache curl git zip unzip nginx nano nodejs supervisor wget yarn
 
 # Install PHP Extension Manager
 ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/php-ext-install
