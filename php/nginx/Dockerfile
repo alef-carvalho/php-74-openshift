@@ -70,8 +70,8 @@ RUN sed -ri -e "s!;date.timezone =!date.timezone = "$PHP_DATE_TIMEZONE"!g" $PHP_
 # Create log files
 RUN mkdir -p /var/log/supervisor /run/supervisor
 
-# copy application files
-COPY ./index.php /app/public/index.php
+# Go-To Application Workdir
+WORKDIR /app
 
 # Expose the port nginx is reachable on
 EXPOSE 8080
