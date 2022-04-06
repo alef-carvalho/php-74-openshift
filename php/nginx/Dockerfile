@@ -48,7 +48,7 @@ RUN chmod +x /usr/local/bin/php-ext-install && php-ext-install \
 RUN php-ext-install @composer-2.0.2
 
 # Configure nginx
-COPY ./config/nginx/nginx.conf /etc/nginx/nginx.conf
+#COPY ./config/nginx/nginx.conf /etc/nginx/nginx.conf
 COPY ./config/nginx/app.conf /etc/nginx/http.d/default.conf
 
 # Configure PHP and FPM
@@ -76,9 +76,17 @@ RUN mkdir -p /var/log/supervisor /run/supervisor
 
 # Fix permissions
 RUN adduser -u 1001 --h /app -G root -D inovedados && \
+    addgroup nginx root && \
     chgrp -R 0 /run /var/log/supervisor && \
     chmod -R g=u /run /var/log/supervisor && \
-    chmod gu+rw /run /var/run
+    chmod gu+rw /run /var/run \
+
+RUN chmod g+rwx /var/cache/nginx /var/run /var/log/nginx
+RUN chgrp -R root /var/cache/nginx
+
+# comment user directive as master process is run as user in OpenShift anyhow
+RUN sed -i.bak 's/^user/#user/' /etc/nginx/nginx.conf
+
 
 # Go-To Application Workdir
 WORKDIR /app
