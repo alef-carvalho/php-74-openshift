@@ -1,16 +1,16 @@
-name: build-php-apache-images
+name: build-php-nginx-images
 
 on:
 
   push:
     branches: [ main ]
     paths:
-      - 'php/apache/**'
+      - 'php/nginx/**'
 
   pull_request:
     branches: [ main ]
     paths:
-      - 'php/apache/**'
+      - 'php/nginx/**'
 
 jobs:
   build:
@@ -28,18 +28,18 @@ jobs:
 
     - name: Build PHP 7.4 Image
       run: |
-        docker build ./php/apache -t "inovedados/php:7.4-apache-openshift" --build-arg PHP_VERSION=php74
+        docker build ./php/nginx -t "inovedados/php:7.4-nginx-openshift" --build-arg PHP_VERSION=7.4
 
     - name: Build PHP 8.0 Image
       run: |
-        docker build ./php/apache -t "inovedados/php:8.0-apache-openshift" --build-arg PHP_VERSION=php80
+        docker build ./php/nginx -t "inovedados/php:8.0-nginx-openshift" --build-arg PHP_VERSION=8.0
 
     - name: Build PHP 8.1 Image
       run: |
-        docker build ./php/apache -t "inovedados/php:8.1-apache-openshift" --build-arg PHP_VERSION=php81
+        docker build ./php/nginx -t "inovedados/php:8.1-nginx-openshift" --build-arg PHP_VERSION=8.1
 
     - name: docker push
       run: |
-        docker push inovedados/php:7.4-apache-openshift
-        docker push inovedados/php:8.0-apache-openshift
-        docker push inovedados/php:8.1-apache-openshift
+        docker push inovedados/php:7.4-nginx-openshift
+        docker push inovedados/php:8.0-nginx-openshift
+        docker push inovedados/php:8.1-nginx-openshift
