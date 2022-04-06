@@ -75,12 +75,18 @@ RUN sed -ri -e "s!;date.timezone =!date.timezone = "$PHP_DATE_TIMEZONE"!g" $PHP_
 RUN mkdir -p /var/log/supervisor /run/supervisor
 
 # Fix permissions
-RUN chgrp -R 0 /run /var/log/supervisor && \
+RUN useradd inovedados && \
+    usermod -u 1001 inovedados && \
+    usermod -aG 0 inovedados && \
+    chgrp -R 0 /run /var/log/supervisor && \
     chmod -R g=u /run /var/log/supervisor && \
     chmod gu+rw /run /var/run
 
 # Go-To Application Workdir
 WORKDIR /app
+
+# Switch to Default User
+USER 1001:0
 
 # Expose the port nginx is reachable on
 EXPOSE 8080
