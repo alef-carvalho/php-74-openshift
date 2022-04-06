@@ -71,9 +71,9 @@ RUN sed -ri -e "s!;date.timezone =!date.timezone = "$PHP_DATE_TIMEZONE"!g" $PHP_
 RUN mkdir -p /var/log/supervisor /run/supervisor
 
 # Fix permissions
-RUN chgrp -R 0 /run/supervisor /var/log/supervisor && \
-    chmod -R g=u /run/supervisor /var/log/supervisor && \
-    chmod gu+rw /var/run
+RUN chgrp -R 0 /run /var/log/supervisor && \
+    chmod -R g=u /run /var/log/supervisor && \
+    chmod gu+rw /run /var/run
 
 # Go-To Application Workdir
 WORKDIR /app
