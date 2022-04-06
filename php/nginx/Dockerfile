@@ -45,6 +45,7 @@ RUN chmod +x /usr/local/bin/php-ext-install && php-ext-install \
 RUN php-ext-install @composer-2.0.2
 
 # Configure nginx
+COPY ./config/nginx/nginx.conf /etc/nginx/nginx.conf
 COPY ./config/nginx/app.conf /etc/nginx/http.d/default.conf
 
 # Configure PHP and FPM
