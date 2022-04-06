@@ -75,7 +75,7 @@ RUN sed -ri -e "s!;date.timezone =!date.timezone = "$PHP_DATE_TIMEZONE"!g" $PHP_
 RUN mkdir -p /var/log/supervisor /run/supervisor
 
 # Fix permissions
-RUN adduser --uuid 1001 --home /app --ingroup root --disabled-password && \
+RUN adduser --uuid 1001 --home /app --ingroup root --disabled-password inovedados && \
     chgrp -R 0 /run /var/log/supervisor && \
     chmod -R g=u /run /var/log/supervisor && \
     chmod gu+rw /run /var/run
