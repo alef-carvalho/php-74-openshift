@@ -67,8 +67,13 @@ RUN sed -ri -e "s!;date.timezone =!date.timezone = "$PHP_DATE_TIMEZONE"!g" $PHP_
     sed -i -e "s/^LogLevel warn/LogLevel Error/" $PHP_CONFIG_FILE && \
     sed -i "/;session.save_path/c\session.save_path=\/tmp" $PHP_CONFIG_FILE
 
-# Create log files
+# Create required directories
 RUN mkdir -p /var/log/supervisor /run/supervisor
+
+# Fix permissions
+RUN chgrp -R 0 /run/supervisor /var/log/supervisor && \
+    chmod -R g=u /run/supervisor /var/log/supervisor && \
+    chmod gu+rw /var/run
 
 # Go-To Application Workdir
 WORKDIR /app
