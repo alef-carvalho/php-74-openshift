@@ -38,7 +38,8 @@ RUN chmod +x /usr/local/bin/php-ext-install && php-ext-install \
     curl \
     dom \
     redis \
-    imagick \
+    imagick  \
+    pcntl \
     xdebug
 
 # Install Composer
