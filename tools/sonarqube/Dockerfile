@@ -21,7 +21,7 @@ ENV SONARQUBE_PLUGIN_DIR="$SONARQUBE_HOME/extensions/plugins"
 USER root
 
 RUN apt-get update && \
-    apt-get install -y envsubst curl zip
+    apt-get install -y gettext-base curl zip
 
 # ===============================================================================================
 # Mitigation for CVE-2021-44228 and CVE-2021-45046
