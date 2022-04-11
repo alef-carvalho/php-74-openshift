@@ -1,74 +1,61 @@
-FROM centos:8
+FROM sonarqube:8.2-community
 
-# define additional repositories
-ENV EPEL_REPOSITORY=https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm \
-    REMI_REPOSITORY=https://rpms.remirepo.net/enterprise/remi-release-8.rpm
+MAINTAINER Alef Carvalho <alef.carvalho@inovedados.com.br>
 
-#define openshift config variables
-ENV SONAR_VERSION=9.0.0.45539 \
-    SONARQUBE_HOME=/opt/sonarqube \
-    SONARQUBE_WEB_PORT=9000 \
-    SONARQUBE_WEB_HOST="sonar.web.host" \
-    SONARQUBE_WEB_CONTEXT="/sonarqube" \
-    SONARQUBE_DATABASE_HOST="192.168.0.1" \
-    SONARQUBE_DATABASE_USERNAME="sonarqube" \
-    SONARQUBE_DATABASE_PASSWORD="sonarqube" \
-    JAVA_HOME=/usr/lib/jvm/jre \
-    LANG=en_US.utf8
+ENV SUMMARY="SonarQube" \
+    DESCRIPTION="Deploy the SonarQube on Openshift Container Platform"
 
-#define openshift tags
-LABEL name="sonarqube" \
-      io.k8s.description="SonarQube" \
-      io.k8s.display-name="SonarQube" \
-      io.openshift.expose-services="9000:9000" \
-      io.openshift.tags="sonarqube,sonar,sonarsource"
+LABEL summary="$SUMMARY" \
+  description="$DESCRIPTION" \
+  io.k8s.description="$DESCRIPTION" \
+  io.k8s.display-name="sonarqube" \
+  io.openshift.expose-services="9000:http" \
+  io.openshift.tags="sonarqube" \
+  release="$SONAR_VERSION"
 
-#expose port to openshift
-EXPOSE 9000
+# Define Plug-in Versions
+ARG SONAR_ZAP_PLUGIN_VERSION=1.2.0
+ENV SONARQUBE_PLUGIN_DIR="$SONARQUBE_HOME/extensions/plugins"
 
-# install php, nodejs and extensions
-RUN yum install $EPEL_REPOSITORY yum-utils $REMI_REPOSITORY -y && \
-    yum update -y && \
-    yum install -y --enablerepo=remi --setopt=tsflags=nodocs java-11-openjdk zip unzip wget nano hostname gettext supervisor
+# Switch to root for package installs
+USER root
 
-# copy supervisor configuration files
-COPY supervisor/base.conf /etc/supervisord.conf
-COPY supervisor/jobs/*.ini /etc/supervisord.d/
+RUN apt-get update && \
+    apt-get install -y curl zip
 
-#download and install sonarqube
-RUN cd /opt && \
-    mkdir ${SONARQUBE_HOME} && \
-    curl -o sonarqube.zip -SL https://binaries.sonarsource.com/Distribution/sonarqube/sonarqube-${SONAR_VERSION}.zip --retry 9 --retry-max-time 0 -C - && \
-    unzip sonarqube.zip && \
-    mv sonarqube-${SONAR_VERSION}/* ${SONARQUBE_HOME} && \
-    rm sonarqube.zip
+# ===============================================================================================
+# Mitigation for CVE-2021-44228 and CVE-2021-45046
+#   - Set LOG4J_FORMAT_MSG_NO_LOOKUPS=true
+#   - Remove JndiLookup.class from the classpath.
+#
+# References:
+#   - https://logging.apache.org/log4j/2.x/security.html
+#   - https://github.com/BCDevOps/sonarqube
+#
+# Search for jars containing JndiLookup.class:
+#   - find / -name log4j-core*.jar -exec unzip -vl {} \; 2>/dev/null | grep JndiLookup.class
+# -----------------------------------------------------------------------------------------------
+ENV LOG4J_FORMAT_MSG_NO_LOOKUPS=true
+RUN find / -name log4j-core*.jar -exec zip -q -d {} org/apache/logging/log4j/core/lookup/JndiLookup.class \; 2>/dev/null
+# ===============================================================================================
 
-#copy configuration file
-COPY ./config/sonar.properties ${SONARQUBE_HOME}/conf/
+# ================================================================================================================================================================================
+# Bundle Plug-in(s)
+# --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-#copy deployer script
-ADD ./scripts/run.sh /usr/bin/run-sonar
+# sonar-zap-plugin - https://github.com/Coveros/zap-sonar-plugin
+RUN set -x \
+  && cd "$SONARQUBE_PLUGIN_DIR" \
+  && curl -o "sonar-zap-plugin-$SONAR_ZAP_PLUGIN_VERSION.jar" -fsSL "https://github.com/Coveros/zap-sonar-plugin/releases/download/sonar-zap-plugin-$SONAR_ZAP_PLUGIN_VERSION/sonar-zap-plugin-$SONAR_ZAP_PLUGIN_VERSION.jar"
 
-#make deployer script as executable
-RUN chmod +x /usr/bin/run-sonar
+WORKDIR $SONARQUBE_HOME
 
-# configure openshift user
-RUN useradd inovedados && usermod -u 1001 inovedados && usermod -aG 0 inovedados && \
-    mkdir -p /var/log/supervisor /var/log/inovedados && \
-    chown -R 1001 /run/supervisor /var/log/supervisor /var/log/inovedados ${SONARQUBE_HOME} && \
-    chgrp -R 0 /run/supervisor /var/log/supervisor /var/log/inovedados ${SONARQUBE_HOME} && \
-    chmod -R g=u /run/supervisor /var/log/supervisor /var/log/inovedados ${SONARQUBE_HOME} && \
-    chmod gu+rw /var/run && \
-    systemctl enable supervisord
+# In order to drop the root user, we have to make some directories world
+# writable as OpenShift default security model is to run the container under
+# random UIDs.
+RUN chown -R 1001:0 "$SONARQUBE_HOME" \
+  && chgrp -R 0 "$SONARQUBE_HOME" \
+  && chmod -R g+rwX "$SONARQUBE_HOME" \
+  && chmod 775 "$SONARQUBE_HOME/bin/run.sh"
 
-#configure volumes
-VOLUME ["${SONARQUBE_HOME}/data", "${SONARQUBE_HOME}/extensions"]
-
-#change user to unprivileged
-USER 10001
-
-#move to workdir
-WORKDIR ${SONARQUBE_HOME}
-
-#start server
-ENTRYPOINT ["run-sonar"]
+USER 1001
