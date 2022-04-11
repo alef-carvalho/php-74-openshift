@@ -60,6 +60,3 @@ RUN chown -R 1001:0 "$SONARQUBE_HOME" \
   && chmod 775 "$SONARQUBE_HOME/bin/run.sh"
 
 USER 1001
-
-ENTRYPOINT ["bin/run.sh"]
-CMD ["bin/sonar.sh"]
