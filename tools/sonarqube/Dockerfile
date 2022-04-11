@@ -66,4 +66,5 @@ RUN chown -R 1001:0 "$SONARQUBE_HOME" \
 USER 1001
 
 ENTRYPOINT ["bin/run.sh"]
-CMD ["bin/sonar-update-config.sh", "bin/sonar.sh"]
+CMD ["bin/sonar-update-config.sh"]
+CMD ["bin/sonar.sh"]
