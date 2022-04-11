@@ -6,4 +6,4 @@ echo "UPDATING SONAR CONFIG FROM ENVIRONMENT VARIABLES"
 cd ${SONARQUBE_HOME}/conf && envsubst < sonar.properties > sonar.properties
 
 # run sonar
-exec java -jar lib/sonar-application-"${SONAR_VERSION}".jar -Dsonar.log.console=true "$@"
+cd ${SONARQUBE_HOME} && exec java -jar lib/sonar-application-"${SONAR_VERSION}".jar -Dsonar.log.console=true "$@"
