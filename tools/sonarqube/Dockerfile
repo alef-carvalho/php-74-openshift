@@ -48,6 +48,10 @@ RUN set -x \
   && cd "$SONARQUBE_PLUGIN_DIR" \
   && curl -o "sonar-zap-plugin-$SONAR_ZAP_PLUGIN_VERSION.jar" -fsSL "https://github.com/Coveros/zap-sonar-plugin/releases/download/sonar-zap-plugin-$SONAR_ZAP_PLUGIN_VERSION/sonar-zap-plugin-$SONAR_ZAP_PLUGIN_VERSION.jar"
 
+#copy configuration file
+COPY ./config/sonar.properties ${SONARQUBE_HOME}/conf/
+RUN cd /opt/sonarqube/conf && envsubst < sonar.properties > sonar.properties
+
 WORKDIR $SONARQUBE_HOME
 
 # In order to drop the root user, we have to make some directories world
