@@ -48,8 +48,8 @@ RUN set -x \
   && cd "$SONARQUBE_PLUGIN_DIR" \
   && curl -o "sonar-zap-plugin-$SONAR_ZAP_PLUGIN_VERSION.jar" -fsSL "https://github.com/Coveros/zap-sonar-plugin/releases/download/sonar-zap-plugin-$SONAR_ZAP_PLUGIN_VERSION/sonar-zap-plugin-$SONAR_ZAP_PLUGIN_VERSION.jar"
 
-#copy configuration file
-COPY --chown=sonarqube:sonarqube ./scripts/sonar-update-config.sh ${SONARQUBE_HOME}/bin/
+# override script
+ADD --chown=sonarqube:sonarqube scripts/sonar.sh ${SONARQUBE_HOME}/bin/
 
 # go to sonar workdir
 WORKDIR $SONARQUBE_HOME
@@ -60,11 +60,9 @@ WORKDIR $SONARQUBE_HOME
 RUN chown -R 1001:0 "$SONARQUBE_HOME" \
   && chgrp -R 0 "$SONARQUBE_HOME" \
   && chmod -R g+rwX "$SONARQUBE_HOME" \
-  && chmod 775 "$SONARQUBE_HOME/bin/run.sh" \
-  && chmod 775 "$SONARQUBE_HOME/bin/sonar-update-config.sh"
+  && chmod 775 "$SONARQUBE_HOME/bin/run.sh"
 
 USER 1001
 
 ENTRYPOINT ["bin/run.sh"]
-CMD ["bin/sonar-update-config.sh"]
 CMD ["bin/sonar.sh"]
