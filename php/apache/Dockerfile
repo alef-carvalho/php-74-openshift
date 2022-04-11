@@ -1,4 +1,4 @@
-FROM centos:latest
+FROM centos:8
 
 # define php version
 ARG PHP_VERSION=php74
@@ -47,7 +47,9 @@ RUN yum update -y && yum install -y \
     crontabs
 
 # install php, nodejs and extensions
-RUN yum install $EPEL_REPOSITORY yum-utils $REMI_REPOSITORY -y && \
+RUN sed -i 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/CentOS-* && \
+    sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-* && \
+    yum install $EPEL_REPOSITORY yum-utils $REMI_REPOSITORY -y && \
     yum --enablerepo=remi && \
     curl -fsSL https://rpm.nodesource.com/setup_15.x | bash - && \
     curl -sL https://dl.yarnpkg.com/rpm/yarn.repo | tee /etc/yum.repos.d/yarn.repo && \
