@@ -48,9 +48,6 @@ RUN set -x \
   && cd "$SONARQUBE_PLUGIN_DIR" \
   && curl -o "sonar-zap-plugin-$SONAR_ZAP_PLUGIN_VERSION.jar" -fsSL "https://github.com/Coveros/zap-sonar-plugin/releases/download/sonar-zap-plugin-$SONAR_ZAP_PLUGIN_VERSION/sonar-zap-plugin-$SONAR_ZAP_PLUGIN_VERSION.jar"
 
-# override script
-ADD --chown=sonarqube:sonarqube scripts/sonar.sh ${SONARQUBE_HOME}/bin/
-
 # go to sonar workdir
 WORKDIR $SONARQUBE_HOME
 
