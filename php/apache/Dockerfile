@@ -86,6 +86,15 @@ RUN yum install $EPEL_REPOSITORY yum-utils $REMI_REPOSITORY -y && \
         $PHP_VERSION-php-redis \
         $PHP_VERSION-php-gmp
 
+# install pdftk
+RUN yum -y localinstall https://www.linuxglobal.com/static/blog/pdftk-2.02-1.el7.x86_64.rpm
+
+# install pdf-to-text
+RUN yum -y install poppler-utils
+
+# install pdfcrop
+ADD ./packages/pdfcrop.pl /usr/bin/pdfcrop
+
 # change config files
 RUN sed -i -e "s/^Listen 80/Listen $APACHE_LISTEN_PORT/" /etc/httpd/conf/httpd.conf && \
     sed -ri -e 's!^(\s*ErrorLog)\s+\S+!\1 /proc/self/fd/2!g' /etc/httpd/conf/httpd.conf && \
