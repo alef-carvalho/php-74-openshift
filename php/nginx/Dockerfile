@@ -17,7 +17,7 @@ ARG NODE_VERSION
 
 # DEFINE LABELS
 LABEL author="Alef Carvalho <alef.carvalho@inovedados.com.br>" \
-    description="PHP + NodeJs + xDebug + Nginx Image"
+    description="Docker image with Nginx, PHP-FPM, Composer, xDebug and NodeJS"
 
 # DEFINE ENVIRONMENT VARIABLES
 ENV APP_DIR="/var/www/html" \
