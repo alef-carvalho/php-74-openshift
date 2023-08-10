@@ -34,6 +34,22 @@ jobs:
         docker build ./php/nginx -t "inovedados/php:8.0-node-19-nginx" --build-arg PHP_VERSION=8.0 --build-arg PHP_XDEBUG_VERSION=3.2.2 --build-arg NODE_VERSION=19
         docker build ./php/nginx -t "inovedados/php:8.0-node-20-nginx" --build-arg PHP_VERSION=8.0 --build-arg PHP_XDEBUG_VERSION=3.2.2 --build-arg NODE_VERSION=20
 
+    - name: Build PHP 8.1 Image
+      run: |
+        docker build ./php/nginx -t "inovedados/php:8.1-node-16-nginx" --build-arg PHP_VERSION=8.1 --build-arg PHP_XDEBUG_VERSION=3.2.2 --build-arg NODE_VERSION=16
+        docker build ./php/nginx -t "inovedados/php:8.1-node-17-nginx" --build-arg PHP_VERSION=8.1 --build-arg PHP_XDEBUG_VERSION=3.2.2 --build-arg NODE_VERSION=17
+        docker build ./php/nginx -t "inovedados/php:8.1-node-18-nginx" --build-arg PHP_VERSION=8.1 --build-arg PHP_XDEBUG_VERSION=3.2.2 --build-arg NODE_VERSION=18
+        docker build ./php/nginx -t "inovedados/php:8.1-node-19-nginx" --build-arg PHP_VERSION=8.1 --build-arg PHP_XDEBUG_VERSION=3.2.2 --build-arg NODE_VERSION=19
+        docker build ./php/nginx -t "inovedados/php:8.1-node-20-nginx" --build-arg PHP_VERSION=8.1 --build-arg PHP_XDEBUG_VERSION=3.2.2 --build-arg NODE_VERSION=20
+
+    - name: Build PHP 8.2 Image
+      run: |
+        docker build ./php/nginx -t "inovedados/php:8.2-node-16-nginx" --build-arg PHP_VERSION=8.2 --build-arg PHP_XDEBUG_VERSION=3.2.2 --build-arg NODE_VERSION=16
+        docker build ./php/nginx -t "inovedados/php:8.2-node-17-nginx" --build-arg PHP_VERSION=8.2 --build-arg PHP_XDEBUG_VERSION=3.2.2 --build-arg NODE_VERSION=17
+        docker build ./php/nginx -t "inovedados/php:8.2-node-18-nginx" --build-arg PHP_VERSION=8.2 --build-arg PHP_XDEBUG_VERSION=3.2.2 --build-arg NODE_VERSION=18
+        docker build ./php/nginx -t "inovedados/php:8.2-node-19-nginx" --build-arg PHP_VERSION=8.2 --build-arg PHP_XDEBUG_VERSION=3.2.2 --build-arg NODE_VERSION=19
+        docker build ./php/nginx -t "inovedados/php:8.2-node-20-nginx" --build-arg PHP_VERSION=8.2 --build-arg PHP_XDEBUG_VERSION=3.2.2 --build-arg NODE_VERSION=20
+
     - name: docker push
       run: |
         docker push inovedados/php:8.0-node-16-nginx
@@ -41,3 +57,15 @@ jobs:
         docker push inovedados/php:8.0-node-18-nginx
         docker push inovedados/php:8.0-node-19-nginx
         docker push inovedados/php:8.0-node-20-nginx
+        
+        docker push inovedados/php:8.1-node-16-nginx
+        docker push inovedados/php:8.1-node-17-nginx
+        docker push inovedados/php:8.1-node-18-nginx
+        docker push inovedados/php:8.1-node-19-nginx
+        docker push inovedados/php:8.1-node-20-nginx
+        
+        docker push inovedados/php:8.2-node-16-nginx
+        docker push inovedados/php:8.2-node-17-nginx
+        docker push inovedados/php:8.2-node-18-nginx
+        docker push inovedados/php:8.2-node-19-nginx
+        docker push inovedados/php:8.2-node-20-nginx
