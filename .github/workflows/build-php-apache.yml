@@ -1,4 +1,4 @@
-name: build-php-images
+name: build-php-apache-images
 
 on:
 
@@ -6,13 +6,11 @@ on:
     branches: [main]
     paths:
       - 'php/apache/**'
-      - 'php/nginx/**'
 
   pull_request:
     branches: [main]
     paths:
       - 'php/apache/**'
-      - 'php/nginx/**'
 
 jobs:
   build:
