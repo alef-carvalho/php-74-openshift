@@ -1,23 +1,18 @@
 # DEFINE BUILD ARGS
 ARG PHP_VERSION="8.2"
 ARG PHP_XDEBUG_VERSION="3.2.2"
-ARG NODE_VERSION="16.18.0"
 
-# DEFINE NODE BASE IMAGE
-FROM node:${NODE_VERSION}-alpine AS node
-
-# DEFINE PHP BASE IMAGE
-FROM php:${PHP_VERSION}-fpm-alpine as php
+# DEFINE BASE IMAGE
+FROM php:${PHP_VERSION}-fpm-alpine
 
 # RELOAD ARGUMENTS (MULTISTAGE BUILD)
 # SEE: https://stackoverflow.com/questions/53681522/share-variable-in-multi-stage-dockerfile-arg-before-from-not-substituted
 ARG PHP_VERSION
 ARG PHP_XDEBUG_VERSION
-ARG NODE_VERSION
 
 # DEFINE LABELS
 LABEL author="Alef Carvalho <alef.carvalho@inovedados.com.br>" \
-    description="Docker image with Nginx, PHP-FPM, Composer, xDebug and NodeJS"
+    description="PHP + NVM + XDebug + Nginx Image"
 
 # DEFINE ENVIRONMENT VARIABLES
 ENV APP_DIR="/var/www/html" \
@@ -31,26 +26,40 @@ ENV APP_DIR="/var/www/html" \
     PHP_POST_MAX_FILESIZE=256M \
     XDEBUG_TOKEN="PHPSTORM" \
     XDEBUG_VERSION=${PHP_XDEBUG_VERSION} \
-    TZ='America/Sao_Paulo'
+    NVM_DIR="/usr/local/nvm" \
+    PROFILE="/etc/profile" \
+    TZ='America/Sao_Paulo' \
+    ENV="/root/.ashrc"
 
 # INSTALL LINUX PACKAGES
+# See: https://github.com/nvm-sh/nvm/blob/master/README.md#installing-nvm-on-alpine-linux
 RUN apk update && apk add --no-cache \
     autoconf \
     bash \
     bash-doc \
     bash-completion \
+    binutils \
+    ca-certificates \
+    coreutils \
     curl \
+    findutils \
+    gcc \
     g++ \
     git \
+    grep \
     htop \
+    libgcc \
     linux-headers \
     postgresql-dev \
     make \
     nano \
     nginx \
+    ncurses \
+    python3 \
     supervisor \
     zip \
     unzip \
+    util-linux \
     wget
 
 # INSTALL PHP EXTENSIONS
@@ -80,11 +89,8 @@ RUN sed -ri -e "s!;date.timezone =!date.timezone = "${PHP_DATE_TIMEZONE}"!g" $PH
     sed -i "/;session.save_path/c\session.save_path=\/tmp" ${PHP_CONFIG_FILE}
 
 # INSTALL NODEJS/YARN
-COPY --from=node /usr/lib /usr/lib
-COPY --from=node /usr/local/lib /usr/local/lib
-COPY --from=node /usr/local/include /usr/local/include
-COPY --from=node /usr/local/bin /usr/local/bin
-RUN npm install -g yarn --force
+RUN mkdir -p ${NVM_DIR} && wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.4/install.sh | bash \
+    && . $NVM_DIR/nvm.sh
 
 # CONFIGURE NGINX
 COPY ./config/nginx/nginx.conf /etc/nginx/nginx.conf
@@ -108,5 +114,7 @@ EXPOSE 8080
 
 # CONFIGURE STARTUP
 COPY --chmod=0755 ./scripts/startup.sh /usr/bin/startup
+
+RUN echo "source /etc/profile" >> /root/.ashrc
 
 ENTRYPOINT ["startup"]
