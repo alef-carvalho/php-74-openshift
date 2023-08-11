@@ -1,6 +1,7 @@
 # DEFINE BUILD ARGS
 ARG PHP_VERSION="8.2"
 ARG PHP_XDEBUG_VERSION="3.2.2"
+ARG NODE_VERSION="18.17.1"
 
 # DEFINE BASE IMAGE
 FROM php:${PHP_VERSION}-fpm-alpine
@@ -9,6 +10,7 @@ FROM php:${PHP_VERSION}-fpm-alpine
 # SEE: https://stackoverflow.com/questions/53681522/share-variable-in-multi-stage-dockerfile-arg-before-from-not-substituted
 ARG PHP_VERSION
 ARG PHP_XDEBUG_VERSION
+ARG NODE_VERSION
 
 # DEFINE LABELS
 LABEL author="Alef Carvalho <alef.carvalho@inovedados.com.br>" \
@@ -26,6 +28,7 @@ ENV APP_DIR="/var/www/html" \
     PHP_POST_MAX_FILESIZE=256M \
     XDEBUG_TOKEN="PHPSTORM" \
     XDEBUG_VERSION=${PHP_XDEBUG_VERSION} \
+    NODEJS_VERSION=${NODE_VERSION} \
     NVM_DIR="/usr/local/nvm" \
     PROFILE="/etc/profile" \
     TZ='America/Sao_Paulo' \
@@ -62,6 +65,9 @@ RUN apk update && apk add --no-cache \
     util-linux \
     wget
 
+# DEFINE SHELL FOR BUILD
+SHELL ["/bin/bash", "-c"]
+
 # INSTALL PHP EXTENSIONS
 RUN pecl install redis xdebug-${XDEBUG_VERSION} \
     && echo "zend_extension=$(find /usr/local/lib/php/extensions/ -name xdebug.so)" > /usr/local/etc/php/conf.d/xdebug.ini \
@@ -90,7 +96,9 @@ RUN sed -ri -e "s!;date.timezone =!date.timezone = "${PHP_DATE_TIMEZONE}"!g" $PH
 
 # INSTALL NODEJS/YARN
 RUN mkdir -p ${NVM_DIR} && wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.4/install.sh | bash \
-    && . $NVM_DIR/nvm.sh
+    && . $NVM_DIR/nvm.sh \
+    && nvm install -s --latest-npm --alias=default $NODE_VERSION \
+    && nvm use default
 
 # CONFIGURE NGINX
 COPY ./config/nginx/nginx.conf /etc/nginx/nginx.conf
