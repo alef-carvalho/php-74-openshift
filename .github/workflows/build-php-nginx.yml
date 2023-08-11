@@ -28,19 +28,19 @@ jobs:
 
     - name: Build PHP 7.4 Image
       run: |
-        docker build ./php/nginx -t "inovedados/php:7.4-nginx" --build-arg PHP_VERSION=7.4 --build-arg PHP_XDEBUG_VERSION=3.1
+        docker build ./php/nginx -t "inovedados/php:7.4-nginx" --build-arg PHP_VERSION=7.4 --build-arg PHP_XDEBUG_VERSION=3.1.5
 
     - name: Build PHP 8.0 Image
       run: |
-        docker build ./php/nginx -t "inovedados/php:8.0-nginx" --build-arg PHP_VERSION=8.0 --build-arg PHP_XDEBUG_VERSION=3.2
+        docker build ./php/nginx -t "inovedados/php:8.0-nginx" --build-arg PHP_VERSION=8.0 --build-arg PHP_XDEBUG_VERSION=3.2.2
 
     - name: Build PHP 8.1 Image
       run: |
-        docker build ./php/nginx -t "inovedados/php:8.1-nginx" --build-arg PHP_VERSION=8.1 --build-arg PHP_XDEBUG_VERSION=3.2
+        docker build ./php/nginx -t "inovedados/php:8.1-nginx" --build-arg PHP_VERSION=8.1 --build-arg PHP_XDEBUG_VERSION=3.2.2
 
     - name: Build PHP 8.2 Image
       run: |
-        docker build ./php/nginx -t "inovedados/php:8.2-nginx" --build-arg PHP_VERSION=8.2 --build-arg PHP_XDEBUG_VERSION=3.2
+        docker build ./php/nginx -t "inovedados/php:8.2-nginx" --build-arg PHP_VERSION=8.2 --build-arg PHP_XDEBUG_VERSION=3.2.2
 
     - name: docker push
       run: |
