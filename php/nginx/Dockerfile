@@ -109,12 +109,13 @@ RUN mkdir -p /run/supervisor && \
 # CONFIGURERE TOOLS
 COPY --chmod=0755 ./scripts/tools/log.sh /usr/bin/log
 
-# EXPOSE PORTS
-EXPOSE 8080
-
 # CONFIGURE STARTUP
 COPY --chmod=0755 ./scripts/startup.sh /usr/bin/startup
 
+# CONFIGURE SHELL STARTUP
 RUN echo "source /etc/profile" >> /root/.ashrc
+
+# EXPOSE PORTS
+EXPOSE 8080
 
 ENTRYPOINT ["startup"]
